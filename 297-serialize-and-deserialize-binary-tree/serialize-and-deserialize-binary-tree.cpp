@@ -22,7 +22,7 @@ public:
             if(currNode==NULL)
             s.append("#,");
             else
-            s.append(to_string(currNode->val)+',');
+            s.append(to_string(currNode->val)+",");
             if(currNode){
                 q.push(currNode->left);
                 q.push(currNode->right);
