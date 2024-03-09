@@ -11,20 +11,14 @@
  */
 class Solution {
 public:
-    TreeNode* construct(vector<int>&preorder, int ps, int pe, vector<int>&inorder,int is,int ie){
+    TreeNode* construct(vector<int>&preorder, int ps, int pe, vector<int>&inorder,int is,int ie,unordered_map<int,int>&m){
         if(ps>pe|| is>ie) return NULL;
         TreeNode* root = new TreeNode(preorder[ps]);
         int idx = 0;
-        for(int i=is;i<=ie;i++){
-            if(inorder[i]==root->val)
-                {
-                    idx = i;
-                    break;
-                }
-        }
+        idx = m[root->val];
         int count = idx-is;
-        root->left = construct(preorder,ps+1,ps+count,inorder,is,idx-1);
-        root->right = construct(preorder,ps+count+1,pe,inorder,idx+1,ie);
+        root->left = construct(preorder,ps+1,ps+count,inorder,is,idx-1,m);
+        root->right = construct(preorder,ps+count+1,pe,inorder,idx+1,ie,m);
         return root;
 
     }
@@ -33,6 +27,6 @@ public:
         for(int i=0;i<inorder.size();i++){
             m[inorder[i]] = i;
         }
-        return construct(preorder,0,preorder.size()-1,inorder,0,inorder.size()-1);
+        return construct(preorder,0,preorder.size()-1,inorder,0,inorder.size()-1,m);
     }
 };
