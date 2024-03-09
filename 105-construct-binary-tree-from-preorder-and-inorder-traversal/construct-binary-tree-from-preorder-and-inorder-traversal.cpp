@@ -12,7 +12,7 @@
 class Solution {
 public:
     TreeNode* construct(vector<int>&preorder, int ps, int pe, vector<int>&inorder,int is,int ie,unordered_map<int,int>&m){
-        if(ps>pe|| is>ie) return NULL;
+        if(ps>pe) return NULL;
         TreeNode* root = new TreeNode(preorder[ps]);
         int idx = 0;
         idx = m[root->val];
