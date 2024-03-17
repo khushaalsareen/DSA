@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool isPalindrome(string &s,int st,int e){
+bool isPalindrome(string &s,int st,int e){
         int i = st, j = e;
         while(i<j){
             if(s[i]!=s[j])
