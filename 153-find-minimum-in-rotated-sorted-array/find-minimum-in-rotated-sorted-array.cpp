@@ -1,28 +1,22 @@
 class Solution {
 public:
-    int pivot(vector<int>&nums){
-        int l= 0;
-        int h = nums.size()-1;
+    int findMin(vector<int>& nums) {
+        int ans = INT_MAX;
+        int l = 0;
+        int n = nums.size();
+        int h = n-1;
         int m;
         while(l<=h){
             m = l+(h-l)/2;
-            if(nums[m]<=nums[nums.size()-1])
-            h = m - 1;
-            else
-            {
-               if(nums[m]>nums[m+1])
-               return m;
-               else
-               l = m+1; 
+            if(nums[l]<=nums[m]){ // left part is sorted
+                ans = min(ans,nums[l]);
+                l = m+1;
+            }
+            else{
+                ans = min(ans,nums[m]);
+                h = m-1;
             }
         }
-        return -1;
-    }
-    int findMin(vector<int>& nums) {
-        int n = nums.size();
-        int piv = pivot(nums);
-        if(piv==-1)
-        return nums[0];
-        return nums[piv+1];
+        return ans;
     }
 };
