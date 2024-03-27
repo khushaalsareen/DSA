@@ -26,8 +26,8 @@ public:
         v.pop_back();
         else{
             swap(v[idx],v[v.size()-1]);
-            v.pop_back();
             m[v[idx]] = idx;
+            v.pop_back();
         }
         return true;
     }
