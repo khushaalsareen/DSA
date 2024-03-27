@@ -6,11 +6,11 @@ public:
         for(int i=0;i<wall.size();i++){
             int pc = 0;
             for(int j=0;j<wall[i].size()-1;j++){
-                pc+=wall[i][j];
+                pc = pc + wall[i][j];
                 m[pc]++;
                 maxi = max(maxi,m[pc]);
             }
         }
-        return  wall.size() - maxi;
+        return wall.size()-maxi;
     }
 };
