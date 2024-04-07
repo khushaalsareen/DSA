@@ -9,7 +9,16 @@ public:
         return dp[idx] =  one + two;
     }
     int climbStairs(int n) {
-        vector<int>dp(n+1,-1);
-        return f(n,dp);
+        vector<int>dp(n+1,0);
+        // return f(n,dp);
+        dp[0] = 1;
+        for(int idx=1;idx<=n;idx++){
+             int one = dp[idx-1];// f(idx-1,dp);
+             int two = 0;
+             if(idx!=1)
+              two = dp[idx-2];// f(idx-2,dp);
+             dp[idx] =  one + two;
+        }
+        return dp[n];
     }
 };
