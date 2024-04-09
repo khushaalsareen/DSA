@@ -18,14 +18,14 @@ public:
          for (int j = 0; j <= m; j++)
         dp[0][j] = 0;
 
-       for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= m; j++) {
-            if (text1[i - 1] == text2[j - 1])
-                dp[i][j] = 1 + dp[i - 1][j - 1];
-            else
-                dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
+        for(int ind1 =0;ind1<n;ind1++){
+            for(int ind2=0;ind2<m;ind2++){
+                 if(text1[ind1]==text2[ind2])
+                 dp[ind1+1][ind2+1] = 1 + dp[ind1][ind2];
+                 else
+                dp[ind1+1][ind2+1] = max(dp[ind1+1][ind2],dp[ind1][ind2+1]);
+            }
         }
-    }
         return dp[n][m];
     }
 };
