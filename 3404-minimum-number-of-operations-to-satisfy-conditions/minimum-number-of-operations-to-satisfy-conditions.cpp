@@ -20,14 +20,14 @@ public:
          }
          int ans = 1e9;
          for(auto it = m1.begin();it!=m1.end();it++){
-              int ops = count(j+1,it->first,grid,dp);
+             
               if(it->first!=val)
-                  ops+=m-it->second;
-               else
-                   ops+=m;
+                  {
+                     int ops = m-it->second+ count(j+1,it->first,grid,dp);
+                          ans = min(ans,ops);
+                  }
                 
-             ans = min(ans,ops);
-              
+        
          }
           
          return dp[j][val+1]= ans;
