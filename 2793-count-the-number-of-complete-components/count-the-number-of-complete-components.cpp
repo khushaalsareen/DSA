@@ -1,13 +1,13 @@
 class Solution {
 public:
-    void dfs(int src, int visited[], vector<int>adjLs[], int V, int parent,int m,int &cnt, int &edge){
+    void dfs(int src, int visited[], vector<int>adjLs[], int V,int &cnt, int &edge){
         visited[src] = 1;
         cnt++;
         for(auto it: adjLs[src]){
             edge++;
             if(!visited[it])
                 {                
-                dfs(it,visited,adjLs,V,src,m,cnt,edge);
+                dfs(it,visited,adjLs,V,cnt,edge);
             }
            
         }
@@ -31,7 +31,7 @@ public:
             int cnt =0;
             int edge =0;
             if(!visited[i]){
-               dfs(i,visited,adjLs,V,-1,i,cnt,edge);
+               dfs(i,visited,adjLs,V,cnt,edge);
                 if(edge==cnt*(cnt-1))
                     ans++;
             }
