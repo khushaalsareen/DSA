@@ -1,35 +1,55 @@
-struct comp {
-    bool operator()(pair<int,pair<int,int>>&p1,pair<int,pair<int,int>>&p2){
-            return p1.first>p2.first;
-    }
-};
 class Solution {
 public:
+    int count(vector<vector<int>> &matrix,int x){
+	int total=0;
+	int n=matrix.size();
+	for(int i=0;i<n;i++){
+		int l=0;
+		int h=n-1;
+		int m;
+		if(x>= matrix[i][0] && x>=matrix[i][n-1]){
+			total+=n;
+		    continue;
+		}
+		else if(x<matrix[i][0])
+			continue;
+		else{
+		while(l<=h){
+			m=l+(h-l)/2;
+			if(matrix[i][m]<=x) l=m+1;
+			else{
+				if( m-1>=0 && matrix[i][m-1]<=x) {
+					total+=m;
+					break;
+				}
+				else{
+			     h=m-1;
+				}
+			}
+		}
+		}
+	}
+	return total;
+}
     int kthSmallest(vector<vector<int>>& matrix, int k) {
-        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,comp>pq;
-        pq.push({matrix[0][0],{0,0}});
-        int cnt = 0;
-        int val = 0;
-        set<pair<int,int>>s;
-        s.insert({0,0});
-        while(!pq.empty() && cnt!=k){
-            pair<int,pair<int,int>> p =pq.top();
-            pq.pop();
-            val = p.first;
-            cnt++;
-            int i = p.second.first;
-            int j = p.second.second;
-            
-            if(i+1<matrix.size() && s.find({i+1,j})==s.end())
-            {
-                pq.push({matrix[i+1][j],{i+1,j}});
-                s.insert({i+1,j});
-            }
-            if(j+1<matrix.size() && s.find({i,j+1})==s.end()){
-                pq.push({matrix[i][j+1],{i,j+1}});
-                s.insert({i,j+1});
-            }
-        }
-        return val;
+        int n=matrix.size();
+        int l= matrix[0][0];
+	int h= matrix[n-1][n-1];
+	int mid;
+	while(l<=h){
+		mid=l+(h-l)/2;
+		if(count(matrix,mid)<k)
+			l=mid+1;
+		else{
+			if(count(matrix,mid-1)<k){
+				return mid;
+				break;
+			}
+			else{
+				h=mid-1;
+			}
+		}
+	}
+    return -1;
     }
 };
