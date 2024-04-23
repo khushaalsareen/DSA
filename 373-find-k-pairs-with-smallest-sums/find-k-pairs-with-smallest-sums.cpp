@@ -1,57 +1,42 @@
 class Solution {
+private:
+    struct comp {
+        vector<int>& nums1;
+        vector<int>& nums2;
+
+        comp(vector<int>& nums1_ref, vector<int>& nums2_ref) : nums1(nums1_ref), nums2(nums2_ref) {}
+
+        bool operator()(const pair<int,int>& p1, const pair<int,int>& p2) const {
+            return nums1[p1.first] + nums2[p1.second] > nums1[p2.first] + nums2[p2.second];
+        }
+    };
+
 public:
     vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
-        
-        //take a brute force approach to make each pair one by one
-        //keep pushing to a PQ - default max-heap but maintain a size of K on the queue
-
-        int n1 = nums1.size();
-        int n2 = nums2.size();
-
-        priority_queue<pair<int,pair<int,int>>> pq;//default as max-heap
-        //try to maintain a size of K
-
-        for(int i=0;i<n1;i++)
-        {
-            for(int j=0;j<n2;j++)
-            {
-                int sum = nums1[i] + nums2[j];
-
-                //we can handle break case for all consecutive sums, if sum exceeds beyond the top 3 values picked
-                //as nums are in ascending
-                if(pq.size() < k)
-                {
-                    pq.push({sum , {nums1[i], nums2[j]}});
-                }
-                else if(sum < pq.top().first)
-                {
-                    //pq is full, but we encountered a lower sum further
-                    //adjust it into it
-                    pq.pop();
-                    pq.push({sum , {nums1[i], nums2[j]}});
-                }
-                else
-                {
-                    //pq is full, but we got a higher sum
-                    //in this case current sum and all further sum are higher
-                    break;
-                }
-
+        int n = nums1.size();
+        int m = nums2.size();
+        vector<vector<int>> ans;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,comp> pq(comp(nums1, nums2)); // Pass nums1 and nums2 to comp constructor
+        pq.push({0,0});
+        int cnt = 0;
+        set<pair<int,int>> s;
+        s.insert({0,0});
+        while(!pq.empty() && cnt != k) {
+            pair<int,int> p = pq.top();
+            pq.pop();
+            cnt++;
+            int i = p.first;
+            int j = p.second;
+            ans.push_back({nums1[i], nums2[j]});
+            if(i + 1 < n && s.find({i + 1, j}) == s.end()) {
+                pq.push({i + 1, j});
+                s.insert({i + 1, j});
+            }
+            if(j + 1 < m && s.find({i, j + 1}) == s.end()) {
+                pq.push({i, j + 1});
+                s.insert({i, j + 1});
             }
         }
-
-        vector<vector<int>> res;
-
-        while(!pq.empty())
-        {
-            int u = pq.top().second.first;
-            int v = pq.top().second.second;
-
-            pq.pop();
-
-            res.push_back({u,v});
-        }
-
-        return res;
+        return ans;
     }
 };
