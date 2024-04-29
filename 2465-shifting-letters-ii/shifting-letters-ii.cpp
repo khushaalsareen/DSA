@@ -16,9 +16,18 @@ public:
             prefixSum[i] += prefixSum[i-1];
         }
         for(int i=0; i < s.length() ; i++){
-           int n=((s[i]-'a')+prefixSum[i])%26;
-            if(n<0) n+=26;
-            s[i]=(char)(n+'a');
+           int actualDiff = prefixSum[i]%26;
+           if(actualDiff<0)
+           actualDiff+=26;
+           int fromZ = 'z' - s[i];
+           if(actualDiff>fromZ)
+           {
+                actualDiff = actualDiff - fromZ;
+                s[i] = (char)(96 + actualDiff);
+           }
+           else{
+            s[i] = (char)(s[i] + actualDiff);
+           }
         }
         return s;
     }
