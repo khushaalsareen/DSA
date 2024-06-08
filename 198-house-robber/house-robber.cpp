@@ -12,7 +12,16 @@ public:
     }
     int rob(vector<int>& nums) {
         int n = nums.size();
-        vector<int>dp(n,-1);
-        return f(nums.size()-1,nums,dp);
+        vector<int>dp(n,0);
+        // return f(nums.size()-1,nums,dp);
+        dp[0] = nums[0];
+        for(int idx=1;idx<n;idx++){
+        int take = nums[idx];
+        if(idx>=2)
+        take += dp[idx-2];
+        int notTake = dp[idx-1] + 0;
+        dp[idx] = max(take,notTake);
+        }
+        return dp[n-1];
     }
 };
