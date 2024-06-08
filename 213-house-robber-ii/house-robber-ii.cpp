@@ -1,25 +1,29 @@
 class Solution {
 public:
-int f(int ind,bool flag,vector<int>&nums,vector<int>&dp){
-        if(ind>=nums.size()) return 0;
-        if(ind == nums.size()-1){
-            return flag == true ? 0 : nums[ind];
-        }
-        if(dp[ind]!=-1) return dp[ind];
-        int take =0;
-        if(ind==0) take = nums[ind] + f(ind+2,!flag,nums,dp);
-        else take = nums[ind] + f(ind+2,flag,nums,dp);
- 
-        int nottake = f(ind+1,flag,nums,dp);
-        return dp[ind]=max(take,nottake);
+    int f(int idx, vector<int>&nums, vector<int>&dp){
+        if(idx==0)
+          return nums[0];
+        if(idx<0) 
+          return 0;
+        if(dp[idx]!=-1) return dp[idx];
+        int take = f(idx-2,nums,dp) + nums[idx];
+        int notTake = f(idx-1,nums,dp) + 0;
+        return dp[idx] = max(take,notTake);
     }
     int rob(vector<int>& nums) {
-        bool flag = false;
-        vector<int>dp(nums.size(),-1);
-        int ans=f(1,flag,nums,dp);
-        fill(dp.begin(), dp.end(), -1);
-        ans=max(ans,nums[0]+f(2,true,nums,dp));
-
-        return ans;
+        int n = nums.size();
+        vector<int>nums1,nums2;
+        if(n==1) return nums[0];
+        for(int i=0;i<nums.size();i++){
+            if(i!=0)
+            nums2.push_back(nums[i]);
+            if(i!=n-1)
+            nums1.push_back(nums[i]);
+        }
+        vector<int>dp1(n-1,-1);
+        vector<int>dp2(n-1,-1);
+        int amt1 = f(nums1.size()-1,nums1,dp1);
+        int amt2 = f(nums2.size()-1,nums2,dp2);
+        return max(amt1,amt2);
     }
 };
