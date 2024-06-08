@@ -1,22 +1,24 @@
 class Solution {
 public:
-    bool f(int idx, int target,vector<int>&arr,vector<vector<int>>&dp){
-        if(target==0) 
-        return true;
-        if(idx==0)
-        return arr[0]==target;
-        if(dp[idx][target]!=-1) return dp[idx][target];
-        bool notpick = f(idx-1,target,arr,dp);
+    int f(int ind, int target,vector<int>&nums,vector<vector<int>>&dp){
+        if(target==0) return true;
+        if(ind==0) return nums[0] == target;
+        if(dp[ind][target]!=-1)
+        return dp[ind][target];
+        bool notpick = f(ind-1,target,nums,dp);
         bool pick = false;
-        if(arr[idx]<=target)
-        pick = f(idx-1,target-arr[idx],arr,dp);
-        return dp[idx][target] = pick || notpick;
+        if(target>=nums[ind])
+        pick = f(ind-1,target-nums[ind],nums,dp);
+        return dp[ind][target]= pick || notpick;
     }
-    bool canPartition(vector<int>& arr) {
-        int t = 0;
-        for(auto it: arr) t+=it;
-        if(t%2) return false;
-        vector<vector<int>>dp(arr.size(),vector<int>(t/2+1,-1));
-        return f(arr.size()-1,t/2,arr,dp);
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for(auto it:nums)
+        sum+=it;
+        if(sum%2 == 1) return false;
+        int target = sum/2;
+        int n = nums.size();
+        vector<vector<int>>dp(n,vector<int>(target+1,-1));
+        return f(nums.size()-1,target,nums,dp);
     }
 };
