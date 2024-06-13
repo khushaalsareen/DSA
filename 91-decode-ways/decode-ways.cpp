@@ -4,18 +4,15 @@ public:
         if(idx>=s.size()){
             return 1;
         }
+        if(s[idx]=='0')
+        return 0;
         if(dp[idx]!=-1) return dp[idx];
-        int cnt = 0;
-        for(int i=idx;i<s.size();i++){
-            if(m2.find(stoi(s.substr(idx,i-idx+1))) !=m2.end())
-            {
-                // stoi(s.substr(idx,i-idx+1))  ->> valid number that be be rep as character
-                cnt+=f(i+1,s,m1,m2,dp);
-            }
-            else
-            break;
-        }
-        return dp[idx] = cnt;
+        int one = f(idx+1,s,m1,m2,dp);
+        int two = 0;
+        if(idx+1<s.size() && m2.find(stoi(s.substr(idx,2)))!=m2.end())
+        two = f(idx+2,s,m1,m2,dp);
+
+        return dp[idx] = one + two;
     }
     int numDecodings(string s) {
         unordered_map<char,int>m1;
