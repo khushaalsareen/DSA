@@ -12,6 +12,7 @@ public:
             return 0;
         if(dp[i][prev+1]!=-1)
             return dp[i][prev+1];
+            int notpick=f(i+1,prev,v,dp);
         int pick=INT_MIN;
 if(prev==-1 or (v[i].first>v[prev].first and v[i].second>=v[prev].second) or (v[i].first==v[prev].first) )//pick condition
         {
@@ -20,7 +21,7 @@ if(prev==-1 or (v[i].first>v[prev].first and v[i].second>=v[prev].second) or (v[
 			//2.age of current index player equal to age of previous index player
 			//3.age of current index player less than age of previous index player and also score of current index player less than score of previous index player
         }
-        int notpick=f(i+1,prev,v,dp);
+        
         return dp[i][prev+1]=max(pick,notpick);//returning maximum of pick and notpick
     }
     int bestTeamScore(vector<int>& scores, vector<int>& ages) {
