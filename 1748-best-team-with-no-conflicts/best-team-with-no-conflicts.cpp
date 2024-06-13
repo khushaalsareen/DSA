@@ -13,7 +13,7 @@ public:
         if(dp[i][prev+1]!=-1)
             return dp[i][prev+1];
         int pick=INT_MIN;
-if(prev==-1 or (v[i].first>v[prev].first and v[i].second>=v[prev].second) or (v[i].first==v[prev].first) or (v[i].first<v[prev].first and v[i].second<v[prev].second))//pick condition
+if(prev==-1 or (v[i].first>v[prev].first and v[i].second>=v[prev].second) or (v[i].first==v[prev].first) )//pick condition
         {
             pick=v[i].second+f(i+1,i,v,dp);//pick only if 
 			//1.age of current index greater than age of previous and also scores[i]>=scores of previous index
