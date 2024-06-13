@@ -25,8 +25,20 @@ public:
             m2.insert({temp[i]-'A'+1,temp[i]});
         }
  
-        vector<int>dp(s.size(),-1);
-        return f(0,s,m1,m2,dp);
+        vector<int>dp(s.size()+1,0);
+       
+        int n = s.size();
+        dp[n] = 1;
+        for(int idx=n-1;idx>=0;idx--){
+            int one = 0;
+           if(s[idx]!='0')
+            one = dp[idx+1];
+            int two = 0;
+            if(idx+1<s.size() && s[idx]!='0' && m2.find(stoi(s.substr(idx,2)))!=m2.end())
+            two = dp[idx+2];
 
+             dp[idx] = one + two;
+        }
+        return dp[0];
     }
 };
