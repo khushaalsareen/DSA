@@ -4,12 +4,14 @@ public:
         if(idx>=s.size()){
             return 1;
         }
-        if(s[idx]=='0')
-        return 0;
+        
         if(dp[idx]!=-1) return dp[idx];
-        int one = f(idx+1,s,m1,m2,dp);
+
+        int one = 0;
+        if(s[idx]!='0')
+        one = f(idx+1,s,m1,m2,dp);
         int two = 0;
-        if(idx+1<s.size() && m2.find(stoi(s.substr(idx,2)))!=m2.end())
+        if(idx+1<s.size() && s[idx]!='0' && m2.find(stoi(s.substr(idx,2)))!=m2.end())
         two = f(idx+2,s,m1,m2,dp);
 
         return dp[idx] = one + two;
@@ -22,9 +24,9 @@ public:
             m1.insert({temp[i],temp[i]-'A'+1});
             m2.insert({temp[i]-'A'+1,temp[i]});
         }
-        if(s[0]=='0')
-        return 0;
+ 
         vector<int>dp(s.size(),-1);
         return f(0,s,m1,m2,dp);
+
     }
 };
