@@ -1,13 +1,10 @@
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
-        unordered_map<int,int>m;
-        for(int i=0;i<nums.size();i++)
-        m[nums[i]]++;
-        for(int i=0;i<=nums.size();i++){
-            if(m.find(i)==m.end())
-            return i;
-        }
-        return -1;
+        int n = nums.size();
+        long long int sum = (n*(n+1))/2;
+        for(auto it: nums)
+        sum= sum - it;
+        return (int)sum;
     }
 };
