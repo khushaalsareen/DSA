@@ -1,46 +1,33 @@
 class Solution {
 public:
-    bool f(int m, vector<int>&weights, int days){
-        if(m<*max_element(weights.begin(),weights.end()))
-        return false;
+    bool f(vector<int>& weights,int mid, int days){
         int cnt = 1;
-        int i = 1;
-        int wt = weights[0];
-        while(i<weights.size()){
-            if(i<weights.size() && wt+weights[i]<=m)
-              {
-                wt+=weights[i];
-                i++;
-              }
-            else if(i<weights.size())
-            {
+        int sum = 0;
+        for(int i=0;i<weights.size();i++){
+            if(sum+weights[i]<=mid){
+                sum+=weights[i];
+                // i++;
+            }
+            else{
                 cnt++;
-                wt = weights[i];
-                i++;
+                sum = weights[i];
             }
         }
         return cnt<=days;
     }
     int shipWithinDays(vector<int>& weights, int days) {
         int l = *max_element(weights.begin(),weights.end());
-        int sum = 0;
-        for(auto it: weights)
-        sum+=it;
-        int h = sum;
-        int m;
+        int h = 0;
+        for(auto it:weights)
+        h+=it;
+        int mid;
         while(l<=h){
-            m = l+(h-l)/2;
-            cout<<endl<<m;
-            if(f(m,weights,days)){
-                if( f(m-1,weights,days))
-                h = m-1;
-                else
-                return m;
-            }
-            else{
-                l = m+1;
-            }
+            mid = l+(h-l)/2;
+            if(f(weights,mid,days))
+            h = mid - 1;
+            else
+            l = mid + 1;
         }
-        return -1;
+        return l;
     }
 };
