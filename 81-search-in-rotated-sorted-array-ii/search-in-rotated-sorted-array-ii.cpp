@@ -1,27 +1,30 @@
 class Solution {
 public:
     bool search(vector<int>& nums, int target) {
+        int n = nums.size();
         int l = 0;
-        int h = nums.size()-1;
-        int m;
+        int h = n-1;
+        int mid;
         while(l<=h){
-            m = l+(h-l)/2;
-            cout<<m<<endl;
-            if(nums[m]==target)
+            mid = l+(h-l)/2;
+            if(nums[mid]==target)
             return true;
-            else if(nums[l]==nums[m] && nums[m]==nums[h])
-            {l++;h--;}
-             else if(nums[l]<=nums[m]){ // left half is sorted
-                if(nums[l]<=target && target<=nums[m])
-                h = m-1;
-                else
-                l = m+1;
+            if(nums[l]==nums[mid] and nums[mid]==nums[h])
+            {
+                l++;
+                h--;
             }
-            else{
-                if(nums[m]<=target && target<=nums[h])
-                l = m+1;
+            else if(nums[l]<=nums[mid]){ // left half is sorted
+                if(nums[l]<=target and target<nums[mid])
+                h = mid-1;
                 else
-                h = m-1;
+                l = mid+1;
+            }
+            else{ // right half is sorted
+                if(nums[mid]<target and target<=nums[h])
+                l = mid+1;
+                else
+                h = mid-1;
             }
         }
         return false;
