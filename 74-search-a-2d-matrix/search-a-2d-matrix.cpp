@@ -4,7 +4,7 @@ public:
         int m = matrix.size();
         int n = matrix[0].size();
         int l = 0;
-        int h = m*n - 1;
+        int h = m*n  - 1;
         int mid;
         while(l<=h){
             mid = l+(h-l)/2;
@@ -13,9 +13,10 @@ public:
             if(matrix[r][c]==target)
             return true;
             else if(matrix[r][c]>target)
-            h = mid-1;
-            else l = mid+1;
+            h = mid - 1;
+            else
+            l = mid + 1;
         }
-        return 0;
+        return false;
     }
 };
