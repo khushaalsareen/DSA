@@ -1,37 +1,30 @@
 class Solution {
 public:
     vector<int> findPeakGrid(vector<vector<int>>& mat) {
-        int rows = mat.size();
-        int cols = mat[0].size();
-        
-        int top = 0;
-        int bottom = rows - 1;
-        
-        while (top <= bottom) {
-            int midRow = top + (bottom - top) / 2;
-            int maxCol = 0;
+        int l = 0;
+        int h = mat[0].size()-1;
+        int mid;
+        while(l<=h){
+            mid = l+(h-l)/2;
             
-            for (int c = 0; c < cols; ++c) {
-                if (mat[midRow][c] > mat[midRow][maxCol]) {
-                    maxCol = c;
+            int maxEle = -1;
+            int maxIdx = -1;
+            for(int i=0;i<mat.size();i++){
+                if(mat[i][mid]>maxEle){
+                    maxEle = mat[i][mid];
+                    maxIdx = i;
                 }
             }
-            
-            bool isPeak = true;
-            if (midRow > 0 && mat[midRow][maxCol] < mat[midRow - 1][maxCol]) {
-                isPeak = false;
-                bottom = midRow - 1;
-            } 
-            if (midRow < rows - 1 && mat[midRow][maxCol] < mat[midRow + 1][maxCol]) {
-                isPeak = false;
-                top = midRow + 1;
-            }
-            
-            if (isPeak) {
-                return {midRow, maxCol};
-            }
-        }
         
-        return {-1, -1};
+            int left = mid-1>=0? mat[maxIdx][mid-1]: -1;
+            int right = mid+1<mat[0].size() ? mat[maxIdx][mid+1]: 1;
+            if(maxEle > left and maxEle>right)
+            return {maxIdx, mid};
+            else if(maxEle<left)
+            h = mid - 1;
+            else
+            l = mid + 1;
+        }
+        return {0,0};
     }
 };
