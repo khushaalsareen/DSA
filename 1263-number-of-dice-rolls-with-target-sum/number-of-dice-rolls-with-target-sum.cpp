@@ -1,24 +1,31 @@
 class Solution {
+    int m = 1e9 + 7;
 public:
-    int numRollsToTarget(int n, int k, int target) {
-        const int m = 1e9 + 7;
-        vector<vector<int>> dp(n + 1, vector<int>(target + 1, 0));
-        
-        // Base case: one way to get sum 0 with 0 dice
-        dp[0][0] = 1;
-        
-        // Fill the DP table
-        for (int dice = 1; dice <= n; ++dice) {
-            for (int sum = 1; sum <= target; ++sum) {
-                dp[dice][sum] = 0;
-                for (int face = 1; face <= k; ++face) {
-                    if (sum - face >= 0) {
-                        dp[dice][sum] = (dp[dice][sum] + dp[dice - 1][sum - face]) % m;
-                    }
-                }
-            }
+    int f(int ind, int target, int k,vector<vector<int>>&dp){
+
+        if(ind == 0){
+            if(target == 0)
+            return 1;
+            else
+            return 0;
         }
-        
-        return dp[n][target];
+        if(dp[ind][target]!=-1)
+        return dp[ind][target];
+        int cnt = 0;
+        for(int i=1;i<=k;i++){
+            int num = i;
+            if(num<=target){
+               cnt = (cnt + f(ind-1,target-num,k,dp))%m;
+            }
+            else
+            break;
+        }
+        return dp[ind][target] = cnt;
+    }
+    int numRollsToTarget(int n, int k, int target) {
+        if(target>n*k)
+        return 0;
+        vector<vector<int>>dp(n+1,vector<int>(target+1,-1));
+        return f(n,target,k,dp);
     }
 };
