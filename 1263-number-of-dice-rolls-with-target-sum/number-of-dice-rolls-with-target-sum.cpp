@@ -2,13 +2,15 @@ class Solution {
     int m = 1e9 + 7;
 public:
     int f(int ind, int target, int k,vector<vector<int>>&dp){
-
+       if(ind!=0 && target <= 0)
+       return 0;
         if(ind == 0){
             if(target == 0)
             return 1;
             else
             return 0;
         }
+        
         if(dp[ind][target]!=-1)
         return dp[ind][target];
         int cnt = 0;
