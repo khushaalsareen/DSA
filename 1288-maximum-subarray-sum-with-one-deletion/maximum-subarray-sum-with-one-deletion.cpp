@@ -15,19 +15,16 @@ public:
         int n = nums.size();
         if(n==1)
         return nums[0];
-        // vector<vector<int>>dp(n,vector<int>(2,0));
+    
         vector<int>prev(2,0);
         vector<int>curr(2,0);
         int ans = -1e9;
-        // for(int i=0;i<n;i++){
-        //     ans = max(ans,f(i,1,arr,dp));
-        // }
-        // return ans;
-        prev[0] = nums[0];
-        prev[1] = nums[0];
-        for(int ind =1;ind<n;ind++){
+       
+        prev[0] = -1e9;
+        prev[1] = -1e9;
+        for(int ind =1;ind<=n;ind++){
             for(int k = 0;k<=1;k++){
-                int notDelete = max(nums[ind],nums[ind]+prev[k]);
+                int notDelete = max(nums[ind-1],nums[ind-1]+prev[k]);
                 int del = -1e9;
                 if(k!=0)
                     del =  prev[k-1];
