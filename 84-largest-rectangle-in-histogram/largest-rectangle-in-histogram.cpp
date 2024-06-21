@@ -7,10 +7,13 @@ public:
         vector<int>NSE(n,n);
         s.push(n-1);
         for(int i=n-2;i>=0;i--){
-            while(!s.empty() and nums[i]<nums[s.top()]){
+            // when am I removing from stack obly if nums[i]<nums[s.top()]
+            if(!s.empty() and nums[i]<nums[s.top()])
+           { while(!s.empty() and nums[i]<nums[s.top()]){
                 PSE[s.top()] = i;
                 s.pop();
-            }
+            }}
+            // else I am pushing in stack always since I wannna find PSE or NSE OF each element
             s.push(i);
         }
         while(!s.empty())
