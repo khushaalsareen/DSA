@@ -1,8 +1,8 @@
 class Solution {
 public:
     int f(int ind, int k,vector<int>&nums,vector<vector<int>>&dp){
-        if(ind==0)
-        return nums[0];
+        if(ind<0)
+        return -1e9;
         if(dp[ind][k]!=-1) return dp[ind][k];
         int notDelete = max(nums[ind],nums[ind]+f(ind-1,k,nums,dp));
         int del = -1e9;
