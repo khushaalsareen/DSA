@@ -24,15 +24,32 @@ public:
         }
         return dp[ind][target] = cnt;
     }
-    int numRollsToTarget(int n, int k, int target) {
-        if(target>n*k)
+    int numRollsToTarget(int n, int k, int Target) {
+        if(Target>n*k)
         return 0;
-        vector<vector<int>>dp(n+1,vector<int>(target+1,-1));
-        // dp[0][0] = 1;
-        // for(int i = 1;i<=n;i++){
-        //     dp[i][0] = 0;
-        // }
-
-        return f(n,target,k,dp);
+        vector<vector<int>>dp(n+1,vector<int>(Target+1,0));
+        dp[0][0] = 1;
+        for(int i = 1;i<=n;i++){
+            dp[i][0] = 0;
+        }
+        for(int i=1;i<=Target;i++){
+            dp[0][i] = 0;
+        }
+        for(int ind=1;ind<=n;ind++){
+            for(int target=1;target<=Target;target++){
+                 int cnt = 0;
+        for(int i=1;i<=k;i++){
+            int num = i;
+            if(num<=target){
+               cnt = (cnt + dp[ind-1][target-num])%m;// f(ind-1,target-num,k,dp))%m;
+            }
+            else
+            break;
+        }
+         dp[ind][target] = cnt;
+            }
+        }
+        return dp[n][Target];
+        
     }
 };
