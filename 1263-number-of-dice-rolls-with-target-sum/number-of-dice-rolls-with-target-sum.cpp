@@ -2,7 +2,7 @@ class Solution {
     int m = 1e9 + 7;
 public:
     int f(int ind, int target, int k,vector<vector<int>>&dp){
-       if(ind!=0 && target <= 0)
+       if(ind!=0 && target == 0)
        return 0;
         if(ind == 0){
             if(target == 0)
@@ -28,6 +28,11 @@ public:
         if(target>n*k)
         return 0;
         vector<vector<int>>dp(n+1,vector<int>(target+1,-1));
+        // dp[0][0] = 1;
+        // for(int i = 1;i<=n;i++){
+        //     dp[i][0] = 0;
+        // }
+
         return f(n,target,k,dp);
     }
 };
