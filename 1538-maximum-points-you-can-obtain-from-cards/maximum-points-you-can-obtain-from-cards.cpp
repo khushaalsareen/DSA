@@ -1,23 +1,18 @@
 class Solution {
 public:
-    int maxScore(vector<int>& nums, int k) {
-        vector<int>psum(nums.size(),0);
-        vector<int>ssum(nums.size(),0);
-        psum[0] = nums[0];
-        for(int i=1;i<nums.size();i++)
-        psum[i] = nums[i] + psum[i-1];
-        ssum[nums.size()-1] = nums[nums.size()-1];
-        for(int i=nums.size()-2;i>=0;i--){
-            ssum[i] = ssum[i+1] + nums[i];
+    int maxScore(vector<int>& cardPoints, int k) {
+        int score = 0;
+        int n = cardPoints.size();
+        for(int i =0;i<k;i++){
+            score+=cardPoints[i];
         }
-        int ans = max(psum[k-1],ssum[nums.size()-k]);
-        for(int i = 1;i<k;i++){
-            int frontCards = i;
-            int backCards = k - i;
-            int pIdx = frontCards - 1;
-            int sIdx = nums.size()-backCards;
-            ans = max(ans, psum[pIdx] + ssum[sIdx]);
+        int maxScore = score;
+        for(int i=0;i<k;i++){
+            int leftVal = cardPoints[k-1-i];
+            score-=leftVal;
+            score+=cardPoints[n-1-i];
+            maxScore = max(score,maxScore);
         }
-        return ans;
+        return maxScore;
     }
 };
