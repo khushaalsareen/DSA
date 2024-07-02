@@ -1,19 +1,12 @@
 class Solution {
 public:
-    
+    static bool cmp(int x, int y){
+        if(abs(x)==abs(y))
+        return x>y;
+        return abs(x)<abs(y);
+    }
     int findClosestNumber(vector<int>& nums) {
-        int n = nums.size();
-        int ele = -1;
-        int dist = 1e9;
-        for(int i=0;i<n;i++){
-            if(abs(nums[i])<dist){
-                dist = abs(nums[i]);
-                ele = nums[i];
-            }
-            else if(abs(nums[i])==dist && nums[i]>ele)
-            ele = nums[i];
-
-        }
-        return ele;
+        sort(nums.begin(),nums.end(),cmp);
+        return nums[0];
     }
 };
