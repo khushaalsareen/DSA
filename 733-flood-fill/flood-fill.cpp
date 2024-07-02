@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void dfs(int sx, int sy, vector<vector<int>>&visited, vector<vector<int>>& image, int tarColor, int expColor,vector<pair<int,int>>&directions){
+    void dfs(int sx, int sy, vector<vector<int>>&visited, vector<vector<int>>& image, int &tarColor, int &expColor,vector<pair<int,int>>&directions){
         visited[sx][sy] = 1;
         image[sx][sy] = tarColor;
         for(int i=0;i<directions.size();i++){
