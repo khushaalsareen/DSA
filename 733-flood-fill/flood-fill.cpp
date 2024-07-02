@@ -1,31 +1,23 @@
 class Solution {
 public:
-    void bfs(int i, int j, vector<vector<int>>&image, vector<vector<int>>&visited, int color, int org){
-        queue<pair<int,int>>q;
-        q.push({i,j});
-        visited[i][j]==1;
-        while(!q.empty()){
-            pair<int,int>p = q.front();
-            q.pop();
-            image[p.first][p.second] = color;
-            for(int dx = -1;dx<=1;dx++){
-                for(int dy=-1;dy<=1;dy++){
-                    if(abs(dx)==abs(dy)) continue;
-                    int newX = p.first + dx;
-                    int newY = p.second + dy;
-                    if(newX>=0 && newX<image.size() && newY>=0 && newY<image[0].size() && image[newX][newY]==org && visited[newX][newY]==0)
-                    {
-                        q.push({newX,newY});
-                        visited[newX][newY] = 1;
-                    }
-                }
+    void dfs(int sx, int sy, vector<vector<int>>&visited, vector<vector<int>>& image, int tarColor, int expColor,vector<pair<int,int>>&directions){
+        visited[sx][sy] = 1;
+        image[sx][sy] = tarColor;
+        for(int i=0;i<directions.size();i++){
+            int newX = sx + directions[i].first;
+            int newY = sy + directions[i].second;
+            if(newX>=0 && newX<image.size() && newY>=0 && newY<image[0].size() && visited[newX][newY]==0 && image[newX][newY]==expColor){
+                dfs(newX,newY,visited,image,tarColor,expColor,directions);
             }
         }
     }
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
-        int org = image[sr][sc];
+        
+        int expColor = image[sr][sc];
+        int tarColor = color;
+        vector<pair<int,int>>directions = {{-1,0},{1,0},{0,1},{0,-1}};
         vector<vector<int>>visited(image.size(),vector<int>(image[0].size(),0));
-        bfs(sr,sc,image,visited,color,org);
+        dfs(sr,sc,visited,image,tarColor,expColor,directions);
         return image;
     }
 };
