@@ -1,41 +1,37 @@
 class Solution {
 public:
-    void bfs(vector<vector<int>>& mat,vector<vector<int>>&visited, int m, int n,vector<vector<int>>&ans){
-        queue<pair<int,pair<int,int>>>q;
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
+    void bfs(vector<vector<int>>& mat,vector<vector<int>>&visited, vector<vector<int>>&ans,vector<pair<int,int>>&directions){
+        queue<pair<pair<int,int>,int>>q;
+        for(int i=0;i<mat.size();i++){
+            for(int j=0;j<mat[0].size();j++){
                 if(mat[i][j]==0)
-                {q.push({0,{i,j}});
+               { q.push({{i,j},0});
                 visited[i][j] = 1;}
             }
         }
         while(!q.empty()){
-            pair<int,pair<int,int>> p= q.front();
+            pair<pair<int,int>,int>p = q.front();
             q.pop();
-            int currDist = p.first;
-            int x = p.second.first;
-            int y = p.second.second;
-            ans[x][y] = currDist;
+            int currX = p.first.first;
+            int currY = p.first.second;
+            int currDist = p.second;
+            ans[currX][currY] = currDist;
 
-            for(int dx = -1;dx<=1;dx++){
-                for(int dy=-1;dy<=1;dy++){
-                    if(abs(dx)==abs(dy)) continue;
-                    int newX = x + dx;
-                    int newY = y + dy;
-                    if(newX>=0 && newY>=0 && newX<m && newY<n && mat[newX][newY]==1 && visited[newX][newY]==0){
-                       q.push({currDist+1,{newX,newY}});
-                       visited[newX][newY] = 1;
-                    }
+            for(int i=0;i<directions.size();i++){
+                int newX = currX + directions[i].first;
+                int newY = currY + directions[i].second;
+                if(newX>=0 && newY>=0 && newX<mat.size() && newY<mat[0].size() && visited[newX][newY]==0 && mat[newX][newY]==1){
+                    visited[newX][newY] = 1;
+                    q.push({{newX,newY},currDist + 1});
                 }
             }
         }
     }
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-        int m = mat.size();
-        int n = mat[0].size();
-        vector<vector<int>> visited(m,vector<int>(n,0));
-        vector<vector<int>>ans(m,vector<int>(n,0));
-        bfs(mat,visited,m,n,ans);
+        vector<vector<int>> visited(mat.size(),vector<int>(mat[0].size(),0));
+        vector<vector<int>> ans(mat.size(),vector<int>(mat[0].size()));
+        vector<pair<int,int>>directions = {{1,0},{-1,0},{0,-1},{0,1}};
+        bfs(mat,visited,ans,directions);
         return ans;
     }
 };
