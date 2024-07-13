@@ -12,7 +12,7 @@
 class Solution {
 public:
     TreeNode* construct(int ps,int pe, int is, int ie,vector<int>& preorder, vector<int>& inorder) {
-        if(ps>pe || is>ie)
+        if(ps>pe )
         return NULL;
 
         TreeNode*root = new TreeNode(preorder[ps]); // created a root node
