@@ -40,6 +40,8 @@ public:
             q.pop();
             TreeNode*currNode = p.first;
             int currDist = p.second;
+            if(currDist<0)
+            break;
             if(currDist==0)
             ans.push_back(currNode->val);
             if(currNode->left && visited.find(currNode->left)==visited.end()){
