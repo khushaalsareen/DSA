@@ -20,8 +20,10 @@ public:
         while(!q.empty()){
             int sz = q.size();
             int minCurrLevel = q.front().second;
-            int first;
-            int last;
+            int first = q.front().second;
+            int last = q.back().second;
+            if(last-first+1>ans)
+            ans = last-first+1;
             for(int i=0;i<sz;i++){
                 pair<TreeNode*, int> p = q.front();
                 q.pop();
@@ -37,8 +39,7 @@ public:
                 if(i==sz-1)
                 last = currNum;
             }
-            if(last-first+1>ans)
-            ans = last-first+1;
+            
         }
         return ans;
     }
