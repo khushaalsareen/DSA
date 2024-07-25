@@ -11,26 +11,19 @@
  */
 class Solution {
 public:
-    TreeNode* generateTree(int ps, int pe, int is, int ie,vector<int>&preorder, vector<int>&inorder){
-        if(ps>pe)
+    TreeNode* generateTree( vector<int>&preorder, int &i, int ub){
+        if(i==preorder.size() || preorder[i]>ub)
         return NULL;
 
-        TreeNode * root = new TreeNode(preorder[ps]);
-        int i;
-        for( i=0;i<inorder.size();i++){
-            if(preorder[ps]==inorder[i])
-            break;
-        }
-        int leftnodes = i - is;
-        root->left = generateTree(ps+1,ps+leftnodes,is,i-1,preorder,inorder);
-        root->right = generateTree(ps + leftnodes + 1,pe,i+1,ie,preorder,inorder);
+        TreeNode* root = new TreeNode(preorder[i]); // processed ith element and now move on to next element
+        i++;
+        root->left = generateTree(preorder,i,root->val);
+        root->right = generateTree(preorder,i,ub);
         return root;
     }
     TreeNode* bstFromPreorder(vector<int>& preorder) {
-        vector<int>inorder = preorder;
-        sort(inorder.begin(),inorder.end());
-        int n = inorder.size();
-        return generateTree(0,n-1,0,n-1,preorder,inorder);
-        
+        int n = preorder.size();
+        int i = 0;
+        return generateTree(preorder,i,1001);
     }
 };
