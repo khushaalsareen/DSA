@@ -1,23 +1,28 @@
 class Solution {
 public:
-    void generate(vector<vector<int>>&ans, vector<int>&v,vector<int>& candidates, int ind, int target){
-    
-       if(ind == candidates.size()){
-        if(target == 0){
+    void generate(int ind,vector<int>&v, vector<int>& candidates, int target, vector<vector<int>> &ans ){
+        if(target == 0)
+        {
             ans.push_back(v);
+            return;
         }
-        return;
-       }
-        if(target>=candidates[ind])
-        {v.push_back(candidates[ind]);
-        generate(ans,v,candidates,ind,target-candidates[ind]);
+        if(ind == candidates.size()){
+            if(target == 0)
+            ans.push_back(v);
+            return;
+        }
+       
+        if(candidates[ind]<=target)
+       { v.push_back(candidates[ind]);
+        generate(ind,v,candidates,target-candidates[ind],ans);
         v.pop_back();}
-        generate(ans,v,candidates,ind+1,target);
+
+         generate(ind+1,v,candidates,target,ans);
     }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         vector<vector<int>> ans;
         vector<int>v;
-        generate(ans,v,candidates,0,target);
+        generate(0,v,candidates,target,ans);
         return ans;
     }
 };
