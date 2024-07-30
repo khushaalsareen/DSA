@@ -1,15 +1,15 @@
 class Solution {
 public:
-    void generate(int &ind, vector<int>&v, vector<vector<int>>&ans, vector<int>&nums){
+    void generate(int ind, vector<int>&v, vector<vector<int>>&ans, vector<int>&nums){
         if(ind == nums.size()){
             ans.push_back(v);
             return;
         }
         // take ith element
         v.push_back(nums[ind]);
-        ind++;
-        generate(ind,v,ans,nums);
-        ind--;
+        // ind++;
+        generate(ind+1,v,ans,nums);
+        // ind--;
         v.pop_back();
         // not take
         int j;
