@@ -10,29 +10,32 @@
  * };
  */
 class Solution {
+    TreeNode * first = NULL;
+    TreeNode* second = NULL;
+    TreeNode* prev = NULL;
+
+    void inorder(TreeNode*root){
+        if(!root)
+        return;
+        inorder(root->left);
+        if(prev && root->val < prev->val){
+            if(first==NULL){
+            first = prev;
+            second = root;
+            }else{
+                second = root;
+            }
+        }
+        prev = root;
+        inorder(root->right);
+    }
 public:
-    void inorder(TreeNode*root, vector<int>&v){
-        if(!root)
-        return;
-        inorder(root->left,v);
-        v.push_back(root->val);
-        inorder(root->right,v);
-    }
-    void inorderAgain(TreeNode*root, vector<int>&v, int &i){
-        if(!root)
-        return;
-        inorderAgain(root->left,v,i);
-        root->val = v[i++];
-        inorderAgain(root->right,v,i);
-    }
     void recoverTree(TreeNode* root) {
         if(!root)
         return;
-        vector<int>v;
-        inorder(root,v);
-        sort(v.begin(),v.end()); // actual sorted result I need in array
-        int i = 0;
-        inorderAgain(root,v,i);
-        
+        inorder(root);
+        int val = first->val;
+        first->val = second->val;
+        second->val = val;
     }
 };
