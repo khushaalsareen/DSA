@@ -15,14 +15,14 @@ public:
         int zeroes = 0;
         int ans = 1e9;
         for(int i=0;i<cnt;i++){
-            if(v[i]==0)
+            if(nums[i]==0)
             zeroes++;
         }
         ans = min(ans,zeroes);
-        for(int i=cnt;i<v.size();i++){
-            if(v[i]==0)
+        for(int i=cnt;i-cnt<nums.size();i++){
+            if(nums[i%n]==0)
             zeroes++;
-            if(v[i-cnt]==0)
+            if(nums[i-cnt]==0)
             zeroes--;
             ans = min(ans,zeroes);
         }
