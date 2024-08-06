@@ -5,31 +5,18 @@ public:
         return 0;
         if(dp[i][j]!=-1)
         return dp[i][j];
-        int maxCoins = INT_MIN;
-        for(int k = i;k<=j;k++){
-            // last burst balloon is kth balloon
-            int coins = nums[i-1]*nums[k]*nums[j+1] + f(i,k-1,nums,dp) + f(k+1,j,nums,dp);
-            maxCoins = max(maxCoins, coins);
+        int ans = -1e9;
+        for(int k=i;k<=j;k++){
+            int score = nums[j+1]*nums[i-1]*nums[k] + f(i,k-1,nums,dp) + f(k+1,j,nums,dp);
+            ans = max(ans,score);
         }
-        return dp[i][j]= maxCoins;
+        return dp[i][j]= ans;
     }
     int maxCoins(vector<int>& nums) {
         int n = nums.size();
-        vector<vector<int>>dp(n+2,vector<int>(n+2,0));
         nums.push_back(1);
         nums.insert(nums.begin(),1);
-        // return f(1,n,nums,dp);
-        for(int i = n;i>=1;i--){
-            for(int j=i;j<=n;j++){
-                int maxCoins = INT_MIN;
-        for(int k = i;k<=j;k++){
-            // last burst balloon is kth balloon
-            int coins = nums[i-1]*nums[k]*nums[j+1] + dp[i][k-1] + dp[k+1][j];
-            maxCoins = max(maxCoins, coins);
-        }
-         dp[i][j]= maxCoins;
-            }
-        }
-        return dp[1][n];
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        return f(1,n,nums,dp);
     }
 };
