@@ -1,23 +1,48 @@
+struct triplet{
+    int stops;
+    int val;
+    int dist;
+    triplet(){
+        stops = 0;
+        val = 0;
+        dist = 0;
+    }
+};
+
 class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
-        vector<int>prices(n,INT_MAX);
-        vector<int>temp(n,INT_MAX);
-        prices[src] = 0;
-        temp[src] = 0;
-
-        for(int i=1;i<=k+1;i++){
-            for(int i=0;i<flights.size();i++){
-                if(prices[flights[i][0]]==INT_MAX)
-                continue;
-                else{
-                    if(prices[flights[i][0]] + flights[i][2]< temp[flights[i][1]]){
-                         temp[flights[i][1]] = prices[flights[i][0]] + flights[i][2];
+        vector<int>dist(n,1e9);
+        dist[src] = 0;
+        vector<pair<int,int>>adjLs[n];
+        for(auto it:flights){
+            adjLs[it[0]].push_back({it[1],it[2]});
+        }
+        queue<pair<int,pair<int,int>>>q; // stops, node, dist
+        q.push({0,{src,0}});
+        while(!q.empty()){
+            pair<int,pair<int,int>> p =q.front();
+            q.pop();
+            int currStops = p.first;
+            int currNode = p.second.first;
+            int currDist = p.second.second;
+            for(auto it:adjLs[currNode]){
+                int nextNode = it.first;
+                int edgeWeight = it.second;
+                if(nextNode == dst && currStops<=k){
+                    if(currDist+edgeWeight<dist[nextNode]){
+                    dist[nextNode] = currDist + edgeWeight;
+                    q.push({currStops+1,{nextNode,dist[nextNode]}});
                     }
                 }
+                else if(nextNode!=dst && currStops<k){
+                    if(currDist+edgeWeight<dist[nextNode]){
+                    dist[nextNode] = currDist + edgeWeight;
+                    q.push({currStops+1,{nextNode,dist[nextNode]}});
+                    }
+                }    
             }
-            prices = temp;            
         }
-        return prices[dst] == INT_MAX ? -1 : prices[dst];
+        return dist[dst] == 1e9? -1: dist[dst];
     }
 };
