@@ -1,54 +1,35 @@
 class Solution {
 public:
-    bool isPalindrome(int i, int j, string &s){
-        while(i<j){
-            if(s[i]!=s[j])
+    bool isPalindrome(int st, int e, string &s){
+        while(st<e){
+            if(s[st]!=s[e])
             return false;
-            i++;
-            j--;
+            st++;
+            e--;
         }
         return true;
     }
-    int f(int ind, string &s, int n,vector<int>&dp){
-        if(ind == s.size())
+    int f(int i, int j, string &s,vector<int>&dp){
+        if(i>=j)
         return 0;
-        if(dp[ind]!=-1)
-        return dp[ind];
-        int minCost = 1e9;
-        for(int j = ind;j<n;j++){
-            if(isPalindrome(ind,j,s)){
-            int cost = 1 + f(j+1,s,n,dp);
-            minCost = min(cost,minCost);
+        if(isPalindrome(i,j,s))
+        return 0;
+        if(dp[i]!=-1)
+        return dp[i];
+        int ans = 1e9;
+        for(int k=i;k<j;k++){
+            if(isPalindrome(i,k,s)){
+                int cuts = 1 + f(k+1,j,s,dp);
+                ans = min(ans,cuts);
             }
         }
-        return dp[ind]= minCost;
+        return dp[i] = ans;
     }
     int minCut(string s) {
-        int n = s.size();
-        vector<int>dp(n+1,0);
-        // return f(0,s,n,dp)-1;
-        vector<vector<int>>isPalindrome(n+1,vector<int>(n+1,true));
-        for(int i = n-1;i>=0;i--){
-            for(int j = i+1;j<n;j++){
-                // if i--j is palindrome
-                if(s[i]!=s[j])
-                isPalindrome[i][j] = false;
-                else{
-                    isPalindrome[i][j] = isPalindrome[i+1][j-1];
-                }
-            }
-        }
-        dp[n] = 0;
-        for(int ind = n-1;ind>=0;ind--){
-            int minCost = 1e9;
-        for(int j = ind;j<n;j++){
-            if(isPalindrome[ind][j]){
-            int cost = 1 + dp[j+1];
-            minCost = min(cost,minCost);
-            }
-        }
-         dp[ind]= minCost;
-        }
-        return dp[0]-1;
+        int n  = s.size();
+        if(isPalindrome(0,n-1,s))
+        return 0;
+        vector<int>dp(n,-1);
+        return f(0,n-1,s,dp);
     }
 };
