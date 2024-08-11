@@ -1,33 +1,38 @@
 class Solution {
 public:
-    vector<int> asteroidCollision(vector<int>& ast) {
-        int n = ast.size();
-        stack<int> s;
-        for(int i = 0; i < n; i++) {
-            if(ast[i] > 0 || s.empty()) {
-                s.push(ast[i]);
+    vector<int> asteroidCollision(vector<int>& arr) {
+        vector<int>ans;
+        stack<int>s;
+        s.push(0);
+        for(int i=1;i<arr.size();i++){
+            if(arr[i]>0)
+            s.push(i);
+            //collsiion will occur
+            bool survived = true;
+            while(!s.empty() && arr[i]*arr[s.top()]<0){
+                int x = s.top(); // index of last element on top of stack
+                s.pop();
+                if(abs(arr[x])>abs(arr[i])){
+                    s.push(x);
+                    survived = false;
+                    break;
+                }
+                else if(abs(arr[x])==abs(arr[i]))
+                {
+                    survived = false;
+                    break;
+                }
+                else
+                continue; // continue knocking out elements from stack
             }
-            else {
-                while(!s.empty() and s.top() > 0 and s.top() < abs(ast[i])) {
-                    s.pop();
-                }
-                if(!s.empty() and s.top() == abs(ast[i])) {
-                    s.pop();
-                }
-                else {
-                    if(s.empty() || s.top() < 0) {
-                        s.push(ast[i]);
-                    }
-                }
-            }
+            if(survived && (s.empty() || arr[s.top()]<0))
+            s.push(i);   
         }
-		// finally we are returning the elements which remains in the stack.
-		// we have to return them in reverse order.
-        vector<int> res(s.size());
-        for(int i = (int)s.size() - 1; i >= 0; i--) {
-            res[i] = s.top();
+        while(!s.empty()){
+            ans.push_back(arr[s.top()]);
             s.pop();
         }
-        return res;
+        reverse(ans.begin(),ans.end());
+        return ans;
     }
 };
