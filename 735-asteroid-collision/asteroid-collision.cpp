@@ -9,7 +9,7 @@ public:
             s.push(i);
             //collsiion will occur
             bool survived = true;
-            while(!s.empty() && arr[i]*arr[s.top()]<0){
+            while(!s.empty() && arr[i]<0 && arr[s.top()]>0){
                 int x = s.top(); // index of last element on top of stack
                 s.pop();
                 if(abs(arr[x])>abs(arr[i])){
