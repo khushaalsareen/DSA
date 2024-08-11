@@ -8,12 +8,12 @@ public:
         s.push(n-1);
         for(int i=n-2;i>=0;i--){
             // when am I removing from stack obly if nums[i]<nums[s.top()]
-            if(!s.empty() and nums[i]<nums[s.top()])
-           { while(!s.empty() and nums[i]<nums[s.top()]){
+            while(!s.empty() and nums[i]<nums[s.top()]){
                 PSE[s.top()] = i;
                 s.pop();
-            }}
+            }
             // else I am pushing in stack always since I wannna find PSE or NSE OF each element
+            if(s.empty() || nums[i]>=nums[s.top()])
             s.push(i);
         }
         while(!s.empty())
