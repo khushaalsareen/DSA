@@ -40,6 +40,7 @@ public:
     bool a6 = dfs(s, wx + pourYtoX, wy - pourYtoX, x, y, target);
     if (a6) return true;
 
+    s.erase({wx,wy});
     return false; // No solution found for this state
 }
 
