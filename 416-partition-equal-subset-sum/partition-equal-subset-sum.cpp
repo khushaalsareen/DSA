@@ -21,7 +21,7 @@ public:
      if(sum%2 !=0)
      return false;
      int tar = sum/2;
-     vector<vector<int>>dp(nums.size(),vector<int>(sum+1,0));
+     vector<vector<int>>dp(nums.size(),vector<int>(tar+1,0));
     //  return f(nums.size()-1,target,nums,dp);   
     for(int ind =0;ind<n;ind++)
     dp[ind][0] = true;
