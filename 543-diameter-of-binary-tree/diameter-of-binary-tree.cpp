@@ -14,16 +14,14 @@ public:
     int height(TreeNode*root, int &ans){
         if(!root)
         return 0;
-        int lh = height(root->left,ans);
-        int rh = height(root->right,ans);
-        ans = max(ans,1+lh+rh);
-        return 1+max(lh,rh);
+        int leftHt = height(root->left,ans);
+        int rightHt  = height(root->right,ans);
+        ans = max(ans,leftHt + rightHt );
+        return 1 + max(leftHt, rightHt);
     }
     int diameterOfBinaryTree(TreeNode* root) {
-        if(!root)
-        return 0;
-        int ans = -1e9;
+        int ans = 0;
         height(root,ans);
-        return ans-1;
+        return ans;
     }
 };
