@@ -11,19 +11,13 @@
  */
 class Solution {
 public:
-    void search(TreeNode*root, int &ans, int low, int high){
-        if(!root)
-        return;
-        if(root->val >=low && root->val<=high)
-        ans+=root->val;
-        search(root->left,ans,low,high);
-        search(root->right,ans,low,high);
-    }
     int rangeSumBST(TreeNode* root, int low, int high) {
         if(!root)
         return 0;
-        int ans = 0;
-        search(root,ans,low,high);
-        return ans;
+        if(root->val > high)
+        return rangeSumBST(root->left,low,high);
+        else if(root->val <low)
+        return rangeSumBST(root->right,low,high);
+        return root->val + rangeSumBST(root->left,low,high) + rangeSumBST(root->right,low,high);
     }
 };
