@@ -1,53 +1,55 @@
 class Node{
-public:
-    Node*links[26];
-    bool flag = false;
+    public:
+    Node* arr[26];
+    int sw;
+    bool eow;
     Node(){
-        for(int i=0;i<26;i++){
-            links[i] = NULL;
-        }
-    }
+        for(int i=0;i<26;i++)
+        arr[i] = NULL;
+        sw = 0;
+        eow = false;
+    } 
 };
-
 class Trie {
-    Node*root;
+    Node *node;
 public:
     Trie() {
-        root = new Node();
+        node = new Node();
     }
     
     void insert(string word) {
-        Node*temp = root;
+        Node* temp = node;
         for(int i=0;i<word.size();i++){
-            if(temp->links[word[i]-'a']==NULL){
-                temp->links[word[i]-'a'] = new Node();
-                temp = temp->links[word[i]-'a'];
+            char ch = word[i];
+            if(temp->arr[ch-'a']==NULL){
+                temp->arr[ch-'a'] = new Node();
+                temp = temp->arr[ch-'a'];
             }
-            else{
-                temp = temp->links[word[i]-'a'];
-            }
+            else
+            temp = temp->arr[ch-'a'];
+            temp->sw++;
         }
-        temp->flag = true;
+        temp->eow = true;
     }
     
     bool search(string word) {
-        Node*temp = root;
+        Node* temp = node;
         for(int i=0;i<word.size();i++){
-            if(temp->links[word[i]-'a']==NULL)
+            if(temp->arr[word[i]-'a']==NULL)
             return false;
             else
-            temp = temp->links[word[i]-'a'];
+            temp = temp->arr[word[i]-'a'];
         }
-        return temp->flag;
+        return temp->eow == true;
     }
     
-    bool startsWith(string prefix) {
-        Node*temp = root;
-        for(int i=0;i<prefix.size();i++){
-            if(temp->links[prefix[i]-'a']==NULL)
+    bool startsWith(string word) {
+        Node*temp = node;
+        for(int i=0;i<word.size();i++){
+            if(temp->arr[word[i]-'a']==NULL)
             return false;
             else
-            temp = temp->links[prefix[i]-'a'];
+            temp = temp->arr[word[i]-'a'];
         }
         return true;
     }
