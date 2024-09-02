@@ -14,8 +14,7 @@ public:
     vector<TreeNode*> generate(int s, int e){
         if(s>e)
         return {NULL};
-        if(s==e)
-        return {new TreeNode(s)};
+        
         vector<TreeNode*>res;
         for(int i = s;i<=e;i++){
             vector<TreeNode*>left = generate(s,i-1);
@@ -23,7 +22,7 @@ public:
         
             for(auto l:left){
                 for(auto r: right){
-                        TreeNode* root = new TreeNode(i);
+                    TreeNode* root = new TreeNode(i);
                     root->left = l;
                     root->right = r;
                     res.push_back(root);
