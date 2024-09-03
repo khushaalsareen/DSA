@@ -10,19 +10,30 @@
  * };
  */
 class Solution {
-    int cnt = 0;
 public:
-    void check(TreeNode*root,long long int target, int &cnt){
-        if(!root) return;
-        if(target==(long long)root->val) cnt++;
-        check(root->left,target*1LL-root->val,cnt);
-        check(root->right,target*1LL-root->val,cnt);
+    void f(TreeNode*root, long long int &sum, int target, int &cnt){
+        if(!root)
+        return;
+        sum=sum + root->val;
+        if(sum==target)
+        cnt++;
+        f(root->left,sum,target,cnt);
+        f(root->right,sum,target,cnt);
+        sum-=root->val;
+    }
+    void traverse(TreeNode*root, int &cnt, int target){
+        if(!root)
+        return;
+        long long int sum = 0;
+        f(root,sum,target,cnt);
+        traverse(root->left,cnt,target);
+        traverse(root->right,cnt,target);
     }
     int pathSum(TreeNode* root, int targetSum) {
-        if(!root) return 0;
-        check(root,targetSum,cnt);
-        pathSum(root->left,targetSum);
-        pathSum(root->right,targetSum);
+        int cnt = 0;
+        if(!root)
+        return 0;
+        traverse(root,cnt,targetSum);
         return cnt;
     }
 };
