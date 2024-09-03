@@ -26,8 +26,9 @@ public:
         if(!root)
         return false;
 
-        if(isSame(root,subRoot))
-        return true;
+        if(root->val == subRoot->val)
+      {  if(isSame(root,subRoot))
+        return true;}
         return isSubtree(root->left,subRoot) || isSubtree(root->right,subRoot);
     }
 };
