@@ -14,7 +14,7 @@ public:
         ListNode*prev = NULL;
         ListNode*curr = head;
         while(curr){
-            ListNode*temp = curr->next;
+            ListNode*temp= curr->next;
             curr->next = prev;
             prev = curr;
             curr = temp;
@@ -24,20 +24,27 @@ public:
     ListNode* reverseKGroup(ListNode* head, int k) {
         if(!head)
         return NULL;
-        ListNode*curr = head;
-        int cnt = 1;
+        if(k == 1)
+        return head;
+        int cnt = 0;
         ListNode*temp = head;
-        while(cnt<k && temp!= NULL){
+        while(temp){
             cnt++;
             temp = temp->next;
         }
-        if(!temp || cnt<k)
+        if(cnt<k)
         return head;
-
-        ListNode* next = temp->next;
-        temp->next = NULL; //isolated first k nodes
-        ListNode* newHead = reverse(curr);
-        curr->next = reverseKGroup(next, k);
+        temp = head;
+        ListNode*prev = NULL;
+        cnt = 0;
+        while(cnt<k-1){
+            cnt++;
+            temp = temp->next;
+        }
+        ListNode*nextnode = temp->next;
+        temp->next = NULL;
+        ListNode* newHead = reverse(head);
+        head->next = reverseKGroup(nextnode,k);
         return newHead;
     }
 };
