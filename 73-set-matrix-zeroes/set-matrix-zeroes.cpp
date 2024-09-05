@@ -3,22 +3,43 @@ public:
     void setZeroes(vector<vector<int>>& matrix) {
         int m = matrix.size();
         int n = matrix[0].size();
-        unordered_map<int,int>rows;
-        unordered_map<int,int>cols;
-        for(int i=0;i<m;i++){
-            for(int j = 0;j<n;j++){
+        bool firstCol = false;
+        bool firstRow = false;
+        for(int i=0;i<n;i++){
+            if(matrix[0][i]==0){
+                firstRow = true;
+                break;
+            }
+        }
+        for(int j = 0;j<m;j++){
+            if(matrix[j][0] == 0){
+                firstCol = true;
+                break;
+            }
+        }
+        for(int i=1;i<m;i++){
+            for(int j=1;j<n;j++){
                 if(matrix[i][j]==0){
-                    rows[i]++;
-                    cols[j]++;
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
                 }
             }
         }
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(rows.find(i)!=rows.end() || cols.find(j)!=cols.end())
+        for(int i=1;i<m;i++){
+            for(int j=1;j<n;j++){
+                if(matrix[i][0]==0 || matrix[0][j]==0)
                 matrix[i][j] = 0;
             }
         }
-
+        if(firstCol){
+            for(int i=0;i<m;i++){
+                matrix[i][0] = 0;
+            }
+        }
+        if(firstRow){
+            for(int i=0;i<n;i++){
+                matrix[0][i] = 0;
+            }
+        }
     }
 };
