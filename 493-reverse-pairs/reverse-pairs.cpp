@@ -1,46 +1,55 @@
 class Solution {
-    int cnt = 0;
-    void merge(vector<int>&arr, int s1, int e1, int s2, int e2,vector<int>&temp){
-        int l1 = s1;
-        int l2 = s2;
-        int c1 = s1;
-        while(l1<=e1 && l2<=e2){
-            if(arr[l1]<=arr[l2])
-            temp[c1++] = arr[l1++];
+public:
+    void countPairs(vector<int>&nums, int s1, int e1, int s2, int e2, int &ans){
+        int n = nums.size();
+        int i =s1;
+        int idx = s2;
+        while(i<=e1){
+            for(;idx<=e2;idx++){
+                if(nums[i]>2*1LL*nums[idx])
+                ans+=e1-i+1;
+                else
+                break;
+            }
+            i++;
+        }
+    }
+    void merge(vector<int>&nums, int s1, int e1, int s2, int e2, vector<int>&temp){
+        int i = s1;
+        int j = s2;
+        int c = s1;
+        while(i<=e1 && j<=e2){
+            if(nums[i]<nums[j]){
+                temp[c++] = nums[i++];
+            }
             else{
-            // cnt+=e1-l1+1;
-            temp[c1++] = arr[l2++];
+                temp[c++] = nums[j++];
             }
         }
-        while(l1<=e1)
-        temp[c1++] = arr[l1++];
-        while(l2<=e2)
-        temp[c1++] = arr[l2++];
-        for(int i = s1;i<=e2;i++){
-            arr[i] = temp[i];
+        while(i<=e1){
+            temp[c++] = nums[i++];
+        }
+        while(j<=e2){
+            temp[c++] = nums[j++];
+        }
+        for(int k=s1;k<=e2;k++){
+            nums[k] = temp[k];
         }
     }
-    void countPairs(vector<int>&arr, int s1, int e1, int s2, int e2, vector<int>&temp){
-        int ind = s2;
-        for(int i=s1;i<=e1;i++){
-            while(ind<=e2 && arr[i]>2*1LL*arr[ind]) ind++;
-            cnt+=ind-s2;
-        }
-    }
-    void mergeSort(vector<int>&arr, int l, int h, vector<int>&temp){
+    void mergeSort(vector<int>&nums, int l, int h, int &ans,vector<int>&temp){
         if(l==h)
         return;
-        int m = l+(h-l)/2;
-        mergeSort(arr,l,m,temp);
-        mergeSort(arr,m+1,h,temp);
-        countPairs(arr,l,m,m+1,h,temp);
-        merge(arr,l,m,m+1,h,temp);
+        int m = l + (h-l)/2;
+        mergeSort(nums,l,m,ans,temp);
+        mergeSort(nums,m+1,h,ans,temp);
+        countPairs(nums,l,m,m+1,h,ans);
+        merge(nums,l,m,m+1,h,temp);
     }
-public:
     int reversePairs(vector<int>& nums) {
         int n = nums.size();
-        vector<int>temp = nums;
-        mergeSort(nums,0,n-1,temp);
-        return cnt;
+        vector<int>temp(n);
+        int ans =0;
+        mergeSort(nums,0,n-1,ans,temp);
+        return ans;
     }
 };
