@@ -1,19 +1,20 @@
 class Solution {
 public:
     int minInsertions(string str) {
-        stack<char>s;
         int cnt = 0;
+        int opened = 0;
         for(int i=0;i<str.size();){
             if(str[i]=='('){
-                s.push('(');
+                // s.push('(');
+                opened++;
                 i++;
             }
             else{
-                if(s.empty()){
+                if(opened == 0){
                     cnt++;
                 }
-                if(!s.empty()){
-                    s.pop();
+                if(opened>0){
+                    opened--;
                 }
                 if(i+1<str.size() && str[i+1]==')'){
                     i+=2;
@@ -24,7 +25,7 @@ public:
                 }
             }
         }
-        cnt+=2*s.size();
+        cnt+=2*opened;
         return cnt;
     }
 };
