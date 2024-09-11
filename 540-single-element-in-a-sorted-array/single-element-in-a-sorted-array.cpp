@@ -19,8 +19,7 @@ public:
                 l = mid+1;
                 else if(mid+1<nums.size() and nums[mid]==nums[mid+1])
                 h = mid -1;
-                else
-                return nums[mid];
+                
             }
         }
         return -1;
