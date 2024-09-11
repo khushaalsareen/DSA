@@ -1,43 +1,53 @@
 class Solution {
 public:
-    string minWindow(string s, string t) {
-        if(t.size()>s.size())
-        return "";
-        int cnt = 0;
-        unordered_map<char,int>m;
-        for(int i=0;i<t.size();i++){
-            m[t[i]]++;
-        }
-        int i = 0;
-        int j = 0;
-        int sp = -1;
-        int ep = -1;
-        string ans = "";
-        int minLen = INT_MAX;
-        unordered_map<char,int>m2;
-        while(j<s.size()){
-            
-            m2[s[j]]++; // substrig ending at index j
-            if(m.find(s[j])!=m.end() && m2[s[j]]<=m[s[j]])
-            cnt++;
-            
+   string minWindow(string s, string t) {
+    int m = s.size();
+    int n = t.size();
 
-            while(cnt==t.size()){
-                if(j-i+1<minLen){
-                    minLen = j-i+1;
-                   sp = i;
-                   ep = j;
-                }
-                m2[s[i]]--;
-                if(m2[s[i]]==0)
-                m2.erase(s[i]);
-                if(m.find(s[i])!=m.end() && m2[s[i]]<m[s[i]])
-                cnt--;
-                i++;
+    if (n > m) return ""; // If t is longer than s, no solution possible
+
+    unordered_map<char, int> freq, map;
+    // Populate freq map with characters from t
+    for (auto ch : t) {
+        freq[ch]++;
+    }
+
+    int cnt = 0; // Number of characters matched
+    int minLen = 1e9; // Length of the minimum window
+    int start = 0; // Start index of the result window
+    int i = 0, j = 0; // Two pointers for sliding window
+
+    while (j < m) {
+        char ch = s[j];
+        map[ch]++;
+
+        // If the current character is in t and we have enough of it in the window
+        if (freq.find(ch) != freq.end() && map[ch] <= freq[ch]) {
+            cnt++;
+        }
+
+        // When all characters are matched, try to minimize the window
+        while (cnt == n) {
+            if (j - i + 1 < minLen) {
+                minLen = j - i + 1;
+                start = i;
             }
 
-            j++;
+            char chLeft = s[i];
+            map[chLeft]--;
+
+            // If a character from t is removed and it's less than required in the window
+            if (freq.find(chLeft) != freq.end() && map[chLeft] < freq[chLeft]) {
+                cnt--;
+            }
+
+            i++; // Shrink the window from the left
         }
-        return sp!=-1 && ep!=-1 ? s.substr(sp,ep-sp+1):"";
+
+        j++; // Expand the window from the right
     }
+
+    return minLen == 1e9 ? "" : s.substr(start, minLen);
+}
+
 };
