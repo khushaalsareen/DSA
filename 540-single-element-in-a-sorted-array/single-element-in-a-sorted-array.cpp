@@ -17,7 +17,7 @@ public:
             else{
                 if(mid-1>=0 and nums[mid]==nums[mid-1])
                 l = mid+1;
-                else if(mid+1<nums.size() and nums[mid]==nums[mid+1])
+                else 
                 h = mid -1;
                 
             }
