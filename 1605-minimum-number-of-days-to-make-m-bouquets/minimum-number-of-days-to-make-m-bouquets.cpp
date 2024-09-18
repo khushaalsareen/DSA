@@ -1,54 +1,51 @@
 class Solution {
 public:
-    // is it possible to make m bouquets in mid days where each bouquet must have k consecutive flowers
-    bool f(vector<int>&bloomDay, int mid, int m, int k){
-        int cntBouquets = 0;
-        int cntFlowers = 0;
-        int prev = 0;
-        if(bloomDay[0]<=mid)
-        {prev = 1;
-         cntFlowers++;
+    // can you make m bouquets within mid days
+    int f(int mid, vector<int>&nums, int m, int k){
+        int n = nums.size();
+        int cnt = 0;
+        int i = 0;
+        for(;i<k;i++){
+            if(nums[i]>mid)
+            break;
         }
-        if(cntFlowers == k) {cntBouquets++;
-        cntFlowers = 0;
-        }
-        if(cntBouquets == m)
-        return true;
-        for(int i = 1;i<bloomDay.size();i++){
-            int curr = 0;
-            if(bloomDay[i]>mid){
-                curr = 0;
-                cntFlowers = 0;
-            }
-            else{
-                curr = prev + 1;
-                cntFlowers++;
-                if(cntFlowers == k){
-                    cntBouquets++;
-                    cntFlowers = 0;
-                    if(cntBouquets == m)
-                    return true;
+        if(i==k)
+        cnt++;
+        i = i==k? k: i+1;
+        while(i<n){
+            int j = i;
+            int idx = i+k;
+            for(;j<i+k && j<n ;j++){
+                if(nums[j]>mid)
+                {
+                    idx = j+1;
+                    break;
                 }
             }
-            prev = curr;
+            if(idx == j)
+            cnt++;
+            i= idx ;
         }
-        return false;
+        return cnt>=m;
     }
-    int minDays(vector<int>& bloomDay, int m, int k) {
-        long long int check = m*1LL*k;
-        if(check>bloomDay.size())
+    int minDays(vector<int>&nums, int m, int k) {
+        int n = nums.size();
+        if(n<m*1LL*k)
         return -1;
-
-        long long int l= *min_element(bloomDay.begin(),bloomDay.end());
-        long long int h = *max_element(bloomDay.begin(),bloomDay.end());
-        long long int mid;
+        int l = *min_element(nums.begin(),nums.end());
+        int h = *max_element(nums.begin(),nums.end());
+        int mid;
+        int ans;
         while(l<=h){
             mid = l+(h-l)/2;
-            if(f(bloomDay,mid,m,k))
-            h = mid-1;
+            cout<<mid<<endl;
+            if(f(mid,nums,m,k)){
+                ans = mid;
+                h = mid - 1;
+            }
             else
-            l = mid + 1;
+            l = mid +1;
         }
-        return l;
+        return ans;
     }
 };
