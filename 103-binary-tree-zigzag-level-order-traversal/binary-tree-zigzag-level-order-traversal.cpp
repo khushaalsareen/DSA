@@ -11,33 +11,39 @@
  */
 class Solution {
 public:
-    void levelOrder(TreeNode* root,vector<vector<int>>&ans){
+    void levelOrder(TreeNode*root, vector<vector<int>>&ans){
         queue<TreeNode*>q;
         q.push(root);
-        int level = 0;
+        int level = -1;
         while(!q.empty()){
             int sz = q.size();
+            level++;
+            cout<<level<<" ";
             vector<int>v(sz);
-            int idx = level%2 == 0? 0 : sz - 1;
+            cout<<sz<<" ";
+            int idx = level%2 == 0? 0 :sz-1;
+            cout<<idx<<" ";
             for(int i=0;i<sz;i++){
                 TreeNode*node = q.front();
                 q.pop();
-                if(level%2 == 0)
-                v[idx++] = node->val;
-                else
-                v[idx--] = node->val;
                 if(node->left)
                 q.push(node->left);
                 if(node->right)
                 q.push(node->right);
+                if(level%2 == 0){
+                    v[idx] = node->val;
+                    idx++;
+                }        
+                else{
+                    v[idx] = node->val;
+                    idx--;
+                }        
             }
-            level++;
             ans.push_back(v);
         }
-        
     }
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-        vector<vector<int>> ans;
+        vector<vector<int>>ans;
         if(!root)
         return ans;
         levelOrder(root,ans);
