@@ -15,14 +15,16 @@ public:
         if(!root)
         return 0;
 
-        int left = f(root->left,ans);
-        int right = f(root->right,ans);
-        left = max(left,0);
-        right = max(right,0);
-        ans = max(ans, root->val + left + right);
-        return root->val + max(left,right);
+        int lsum = f(root->left,ans);
+        int rsum = f(root->right,ans);
+        int currAns = root->val + max({lsum,rsum,lsum+rsum,0});
+        ans = max(ans,currAns);
+
+        return root->val + max({lsum,rsum,0});
     }
     int maxPathSum(TreeNode* root) {
+        if(!root)
+        return 0;
         int ans = -1e9;
          f(root,ans);
          return ans;
