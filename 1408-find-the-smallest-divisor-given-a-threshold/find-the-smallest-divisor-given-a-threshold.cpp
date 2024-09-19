@@ -1,23 +1,28 @@
 class Solution {
 public:
-    bool f(vector<int>&nums, int mid, int threshold){
-        long long int sum = 0;
-        for(int i = 0;i<nums.size();i++){
-            sum = sum + ceil(nums[i]/(mid*1.0));
+    bool check(int m, vector<int>&nums, int threshold){
+        int sum = 0;
+        for(auto it:nums){
+            sum+=ceil(it/(m*1.0));
         }
         return sum<=threshold;
     }
     int smallestDivisor(vector<int>& nums, int threshold) {
+        int n =nums.size();
         int l = 1;
         int h = *max_element(nums.begin(),nums.end());
-        int mid;
+        int m;
+        int ans;
         while(l<=h){
-            mid = l+(h-l)/2;
-            if(f(nums,mid,threshold))
-            h = mid - 1;
+            m = l+(h-l)/2;
+            if(check(m,nums,threshold)){
+                ans = m;
+                h = m -1;
+            }
             else
-            l = mid + 1;
+            l = m+1;
         }
-        return l;
+        return ans;
+
     }
 };
