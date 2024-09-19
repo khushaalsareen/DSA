@@ -1,33 +1,42 @@
 class Solution {
 public:
-    bool f(vector<int>& weights,int mid, int days){
+    bool f(int mid, vector<int>&nums, int days){
         int cnt = 1;
-        int sum = 0;
-        for(int i=0;i<weights.size();i++){
-            if(sum+weights[i]<=mid){
-                sum+=weights[i];
-                // i++;
+        int load = 0;
+        for(int i=0;i<nums.size();i++){
+        if(load + nums[i]<=mid){
+                load+=nums[i];
             }
             else{
                 cnt++;
-                sum = weights[i];
+                load = nums[i];
             }
         }
-        return cnt<=days;
+
+        if(cnt>days)
+        return false;
+        return true;
     }
-    int shipWithinDays(vector<int>& weights, int days) {
-        int l = *max_element(weights.begin(),weights.end());
-        int h = 0;
-        for(auto it:weights)
-        h+=it;
+    int shipWithinDays(vector<int>&nums, int days) {
+        int n = nums.size();
+        int l = *max_element(nums.begin(),nums.end());
+        int h;
+        int sum = 0;
+        for(auto it:nums){
+            sum+=it;
+        }
+        h = sum;
         int mid;
+        int ans;
         while(l<=h){
             mid = l+(h-l)/2;
-            if(f(weights,mid,days))
-            h = mid - 1;
+            if(f(mid,nums,days)){
+                ans = mid;
+                h = mid-1;
+            }
             else
-            l = mid + 1;
+            l = mid+1;
         }
-        return l;
+        return ans;
     }
 };
