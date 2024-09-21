@@ -3,7 +3,7 @@ public:
     vector<int> sortedSquares(vector<int>& nums) {
         int n = nums.size();
 
-        int idx = -1;
+        int idx = n;
         for(int i=0;i<n;i++){
             if(nums[i]>=0){
                 idx = i;
@@ -16,10 +16,7 @@ public:
         
         int j = idx - 1;
         vector<int>ans;
-        if(idx == -1){
-            reverse(nums.begin(),nums.end());
-            return nums;
-        }
+       
         while(j>=0 && idx<n){
             if(nums[idx]>nums[j]){
                 ans.push_back(nums[j]);
