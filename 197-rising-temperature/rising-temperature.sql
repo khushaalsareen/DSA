@@ -4,6 +4,6 @@
 #where t1.temp < t2.temp
 
 
-SELECT t2.id   AS Id FROM Weather AS t1 LEFT JOIN Weather AS t2 
+SELECT t2.id  FROM Weather AS t1 INNER JOIN Weather AS t2 
 ON DATE_ADD(t1.recordDate, INTERVAL 1 DAY) = t2.recordDate
 WHERE t1.temperature < t2.temperature
