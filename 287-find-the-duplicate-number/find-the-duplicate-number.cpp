@@ -4,16 +4,15 @@ public:
         int n = nums.size();
         int slow = nums[0];
         int fast = nums[0];
-        while(true){
+        do{
             slow = nums[slow];
             fast = nums[nums[fast]];
-            if(slow == fast)
-            break;
-        }
+        }while(slow!=fast);
+
         int temp = nums[0];
-        while(temp!=slow){
-            temp = nums[temp];
+        while(slow!=temp){
             slow = nums[slow];
+            temp = nums[temp];
         }
         return temp;
     }
