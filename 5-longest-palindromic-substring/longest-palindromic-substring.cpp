@@ -1,49 +1,45 @@
 class Solution {
 public:
-    int findLength(string &nums1, string &nums2, int &ansI, int &ansJ) {
-    int s1 = nums1.size();
-    int s2 = nums2.size();
-    int ans = 0;
+    pair<int,pair<int,int>> f(string &s, int i, int j){
+        int len = 1;
+        while(i>=0 && j<s.size() && s[i]==s[j]){
+            len+=2;
+            i--;
+            j++;
+        }
+        return {len,{i+1,j-1}};
+    }
+    pair<int,pair<int,int>> e(string &s, int i, int j){
+        int len = 0;
+        while(i>=0 && j<s.size() && s[i]==s[j]){
+            len+=2;
+            i--;
+            j++;
+        }
+        return {len,{i+1,j-1}};
+    }
 
-    vector<int> prev(s2 + 1, 0);
-    vector<int> curr(s2 + 1, 0);
-
-    for (int i = 1; i <= s1; i++) {
-        for (int j = 1; j <= s2; j++) {
-            if (nums1[i - 1] == nums2[j - 1]) {
-                curr[j] = 1 + prev[j - 1]; // f(i-1,j-1,nums1,nums2);
-            } else {
-                curr[j] = 0;
+    string longestPalindrome(string s) {
+        int n = s.size();
+        string ans = "";
+        int sp;
+        int ep;
+        for(int i=0;i<n;i++){
+            // expand around centre i
+            pair<int,pair<int,int>> oddlen = f(s,i-1,i+1);
+            pair<int,pair<int,int>> evenlen = e(s,i-1,i);
+            if(oddlen.first>evenlen.first)
+            {
+                if(oddlen.first>ans.size()){
+                    ans = s.substr(oddlen.second.first,oddlen.first);
+                }
             }
-
-            // Update the answer and check if the indices match the palindromic condition
-            if (curr[j] > ans) {
-                int startInOriginal = i - curr[j];
-                int startInReversed = s2 - j; // Corresponding index in the reversed string
-
-                // Only update if it's a valid palindrome
-                if (startInOriginal == startInReversed) {
-                    ansI = i;
-                    ansJ = j;
-                    ans = curr[j];
+            else{
+                if(evenlen.first>ans.size()){
+                    ans = s.substr(evenlen.second.first,evenlen.first);
                 }
             }
         }
-        prev = curr;
+        return ans;
     }
-
-    return ans;
-}
-
-string longestPalindrome(string s) {
-    string reversed = s;
-    reverse(reversed.begin(), reversed.end());
-
-    int ansI = -1, ansJ = -1;
-    int len = findLength(s, reversed, ansI, ansJ);
-
-    // Extract the substring
-    return s.substr(ansI - len, len);
-}
-
 };
