@@ -17,8 +17,8 @@ public:
 
         int lh = findSum(root->left,ans);
         int rh = findSum(root->right,ans);
-        lh = max(lh,0);
-        rh = max(rh,0);
+        // lh = max(lh,0);
+        // rh = max(rh,0);
         ans = max({ans,root->val,root->val+lh,root->val+rh,root->val+lh+rh});
         return root->val + max({lh,rh,0});
     }
