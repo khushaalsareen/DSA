@@ -3,30 +3,39 @@ public:
     string reverseWords(string s) {
         int n = s.size();
         int i = 0;
-        while(i<n && s[i]==' '){
-            i++;
-        }
         int j = n-1;
-        while(j>=0 && s[j]==' '){
-            j--;
+        while(i<n){
+            if(s[i]==' ')
+            i++;
+            else
+            break;
         }
-        // i---j
-        int st = j;
-        string ans="";
+        // i poiting to first char
+
+        while(j>=0){
+            if(s[j]==' ')
+            j--;
+            else
+            break;
+        }
+        // j pointing to last char
+
+        string ans = "";
+        
         while(j>=i){
-        while(j>=i && s[j]!=' '){
-            j--;
+        int k = j;
+        while(k>=i && s[k]!=' '){
+            k--;
         }
-        // j is at  a space
-        if(ans.size()==0)
-        ans = ans  + s.substr(j+1,st-j);
-        else
-        ans = ans + " " + s.substr(j+1,st-j);
-        while(j>=i && s[j]==' '){
-            j--;
+        ans+=s.substr(k+1,j-k);
+        if(i!=k+1)
+        ans.push_back(' ');
+        while(k>=i && s[k]==' '){
+            k--;
         }
-        st = j;
-        }
-        return ans;
+        j = k;
     }
+    return ans;
+    }
+
 };
