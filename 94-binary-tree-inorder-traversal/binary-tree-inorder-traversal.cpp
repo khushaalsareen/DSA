@@ -22,10 +22,10 @@ public:
             }
             else{
                 if(s.size()==0) break;
-                TreeNode*n = s.top();
+                node = s.top();
                 s.pop();
-                ans.push_back(n->val);
-                node = n->right;
+                ans.push_back(node->val);
+                node = node->right;
             }
         }
         return ans;
