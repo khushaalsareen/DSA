@@ -1,23 +1,26 @@
 class Solution {
 public:
+    
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> ans;
         sort(nums.begin(),nums.end());
-        int n = nums.size();
-        vector<vector<int>>ans;
-        for(int i=0;i<n;){
-            // int three = target - nums[i];
-            for(int j=i+1;j<n;){
-                // int two = three - nums[j];
+        for(int i=0;i<nums.size();){
+            // first value is nums[i];
+            int f = nums[i];
+            for(int j=i+1;j<nums.size();){
+                // second value is nums[j]
+                int s = nums[j];
                 int k = j+1;
-                int l = n-1;
+                int l = nums.size()-1;
                 while(k<l){
-                    long long int sum = nums[i]*1LL + nums[j] + nums[k] + nums[l];
-                    if(sum<target)
-                    k++;
-                    else if(sum>target)
-                    l--;
+                    if(f + s*1LL + nums[k] + nums[l]>target){
+                        l--;
+                    }
+                    else if(f*1LL + s + nums[k] + nums[l]<target){
+                        k++;
+                    }
                     else{
-                        vector<int>temp = {nums[i],nums[j],nums[k],nums[l]};
+                        vector<int>temp = {f,s,nums[k],nums[l]};
                         ans.push_back(temp);
                         k++;
                         l--;
@@ -26,10 +29,10 @@ public:
                     }
                 }
                 j++;
-                while(j<n && nums[j]==nums[j-1]) j++;
+                while(j<nums.size() && nums[j]==nums[j-1]) j++;
             }
             i++;
-            while(i<n && nums[i]==nums[i-1]) i++;
+            while(i<nums.size() && nums[i] == nums[i-1]) i++;
         }
         return ans;
     }
