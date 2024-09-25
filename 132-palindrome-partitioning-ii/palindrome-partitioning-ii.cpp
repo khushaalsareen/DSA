@@ -10,14 +10,13 @@ public:
         return true;
     }
     int f(int i, int j, string &s,vector<int>&dp){
-        if(i>=j)
+        if(i>j)
         return 0;
-        if(isPalindrome(i,j,s))
-        return 0;
+         
         if(dp[i]!=-1)
         return dp[i];
         int ans = 1e9;
-        for(int k=i;k<j;k++){
+        for(int k=i;k<=j;k++){
             if(isPalindrome(i,k,s)){
                 int cuts = 1 + f(k+1,j,s,dp);
                 ans = min(ans,cuts);
@@ -27,9 +26,8 @@ public:
     }
     int minCut(string s) {
         int n  = s.size();
-        if(isPalindrome(0,n-1,s))
-        return 0;
-        vector<int>dp(n,-1);
-        return f(0,n-1,s,dp);
+    
+        vector<int>dp(n+1,-1);
+        return f(0,n-1,s,dp)-1;
     }
 };
