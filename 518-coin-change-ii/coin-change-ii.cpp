@@ -1,6 +1,8 @@
 class Solution {
 public:
     int f(int ind, int target, vector<int>&coins,vector<vector<int>>&dp){
+        if(target == 0)
+        return 1;
         if(ind==0){
             if(target%coins[0] == 0)
             return 1;
