@@ -8,7 +8,7 @@ public:
         for(int j=ind;j<nums.size();j++){
             swap(nums[ind],nums[j]);
             f(ind+1,v,ans,nums);
-            // swap(nums[ind],nums[j]);
+            swap(nums[ind],nums[j]);
         }
     }
     vector<vector<int>> permute(vector<int>& nums) {
