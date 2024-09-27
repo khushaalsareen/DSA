@@ -13,17 +13,20 @@ public:
         if(nums[n-1]<=nums[n-2])
         q.push({n-1,1});
         for(int i=1;i<n-1;i++){
-            if(nums[i]<nums[i-1] && nums[i]<nums[i+1])
+            // if(nums[i]<nums[i-1] && nums[i]<nums[i+1])
+            // q.push({i,1});
+            // else if(nums[i]<nums[i-1] && nums[i]==nums[i+1])
+            // q.push({i,1});
+            // else if(nums[i]==nums[i-1] && nums[i]==nums[i+1])
+            // q.push({i,1});
+            // else if(nums[i]==nums[i-1] && nums[i]<nums[i+1])
+            // q.push({i,1});
+            // else if(nums[i]==nums[i+1] && nums[i]<nums[i-1])
+            // q.push({i,1});
+            if((nums[i]>nums[i-1] && nums[i]<nums[i+1])|| (nums[i]>nums[i+1] && nums[i]<nums[i-1]))
+            continue;
+            else
             q.push({i,1});
-            else if(nums[i]<nums[i-1] && nums[i]==nums[i+1])
-            q.push({i,1});
-            else if(nums[i]==nums[i-1] && nums[i]==nums[i+1])
-            q.push({i,1});
-            else if(nums[i]==nums[i-1] && nums[i]<nums[i+1])
-            q.push({i,1});
-            else if(nums[i]==nums[i+1] && nums[i]<nums[i-1])
-            q.push({i,1});
-            
         }
         while(!q.empty()){
             pair<int,int> p = q.front();
