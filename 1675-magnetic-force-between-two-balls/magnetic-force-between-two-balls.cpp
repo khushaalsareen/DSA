@@ -9,7 +9,9 @@ public:
                 prev = i;
             }
         }
-        return cnt>=m;
+        if(cnt<m)
+        return false;
+        return true;
     }
     int maxDistance(vector<int>& nums, int m) {
         sort(nums.begin(),nums.end());
