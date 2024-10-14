@@ -11,28 +11,56 @@
  */
 class Solution {
 public:
-    void inorder(TreeNode*root, vector<int>&ans){
-        if(!root)
-        return;
-        inorder(root->left,ans);
-        ans.push_back(root->val);
-        inorder(root->right,ans);
+    TreeNode*findPred(TreeNode*root, int value){
+        TreeNode*ans = NULL;
+        TreeNode*tmp = root;
+        while(tmp){
+            if(tmp->val < value){
+                ans = tmp;
+                tmp = tmp->right;
+            }
+            else
+                tmp = tmp->left;
+        }
+        return ans;
     }
-    bool findTarget(TreeNode* root, int target) {
-        vector<int>ans;
+
+    TreeNode* findSucc(TreeNode*root, int value){
+        TreeNode*ans = NULL;
+        TreeNode*tmp = root;
+        while(tmp){
+            if(tmp->val > value){
+                ans = tmp;
+                tmp = tmp->left;
+            }
+            else
+                tmp = tmp->right;
+        }
+        return ans;
+    }
+
+    bool findTarget(TreeNode* root, int k) {
         if(!root->left && !root->right)
         return false;
-        inorder(root,ans);
-        int i = 0;
-        int j = ans.size()-1;
-        while(i<j){
-            int sum = ans[i] + ans[j];
-            if(ans[i]+ans[j]==target)
+
+        TreeNode*leftNode = root;
+        TreeNode*rightNode = root;
+        while(leftNode->left){
+            leftNode = leftNode->left;
+        }
+        while(rightNode->right){
+            rightNode = rightNode->right;
+        }
+        // both left and right point to extreme points
+        while(leftNode->val < rightNode->val){
+            int sum = leftNode->val + rightNode->val;
+            if(sum == k)
             return true;
-            else if(sum>target)
-            j--;
+            else if(sum>k){
+                rightNode = findPred(root,rightNode->val);
+            }
             else
-            i++;
+                leftNode = findSucc(root,leftNode->val);
         }
         return false;
     }
