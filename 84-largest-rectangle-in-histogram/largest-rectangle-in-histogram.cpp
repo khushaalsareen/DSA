@@ -13,7 +13,7 @@ public:
                 s.pop();
             }
             // else I am pushing in stack always since I wannna find PSE or NSE OF each element
-            if(s.empty() || nums[i]>=nums[s.top()])
+            // if(s.empty() || nums[i]>=nums[s.top()])
             s.push(i);
         }
         while(!s.empty())
