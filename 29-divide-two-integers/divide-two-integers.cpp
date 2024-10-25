@@ -27,7 +27,7 @@ public:
             ans = ans + (1<<cnt);
         }
         if(!sign)
-        ans = -1 * ans;
+        ans = -ans;
         
         return ans;
     }
