@@ -11,14 +11,19 @@ public:
 
         if(dividend == 0)
         return 0;
+        
+        if(dividend == INT_MIN && divisor == -1)
+        return INT_MAX;
+        if(dividend == INT_MIN && divisor == 1)
+        return INT_MIN;
         long ans = 0;
         while(dd>=dv){
             long cnt = 0;
-            while((dv*(1L<<(cnt+1)))<=dd){
+            while((dv<<(cnt+1))<=dd){
                 cnt++;
             }
-            dd = dd - (dv*(1L<<(cnt)));
-            ans = ans + (1L<<(cnt));
+            dd = dd - (dv<<cnt);
+            ans = ans + (1<<cnt);
         }
         if(!sign)
         ans = -1 * ans;
