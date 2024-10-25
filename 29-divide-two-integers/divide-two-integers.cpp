@@ -14,11 +14,11 @@ public:
         long ans = 0;
         while(dd>=dv){
             long cnt = 0;
-            while((dv*(1L<<cnt))<=dd){
+            while((dv*(1L<<(cnt+1)))<=dd){
                 cnt++;
             }
-            dd = dd - (dv*(1L<<(cnt-1)));
-            ans = ans + (1L<<(cnt-1));
+            dd = dd - (dv*(1L<<(cnt)));
+            ans = ans + (1L<<(cnt));
         }
         if(!sign)
         ans = -1 * ans;
