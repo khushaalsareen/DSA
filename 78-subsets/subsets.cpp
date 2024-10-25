@@ -10,7 +10,7 @@ public:
             vector<int>v;
             for(int bitPos = 0;bitPos<n;bitPos++){
                 if(mask & (1<<bitPos)){
-                    v.push_back(nums[bitPos]);
+                    v.push_back(nums[n-1-bitPos]);
                 }
             }
             if(s.find(v)==s.end()){
