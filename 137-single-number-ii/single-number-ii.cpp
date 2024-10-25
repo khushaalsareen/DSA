@@ -2,18 +2,11 @@ class Solution {
 public:
     int singleNumber(vector<int>& nums) {
         int n = nums.size();
-        int num = 0;
-        for(int bit = 0; bit<32; bit++){
-            int cnt = 0;
-            for(auto it:nums){
-                if((1<<bit) & it)
-                cnt++;
-            }
-            if(cnt%3 ==1){
-                //set this ith bit
-                num = num | (1<<bit);
-            }
+        sort(nums.begin(),nums.end());
+        for(int i=1;i<n;i+=3){
+            if(nums[i]!=nums[i-1])
+            return nums[i-1];
         }
-        return num;
+        return nums[n-1];
     }
 };
