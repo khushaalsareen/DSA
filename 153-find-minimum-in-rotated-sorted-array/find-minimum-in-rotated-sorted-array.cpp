@@ -4,17 +4,18 @@ public:
         int n = nums.size();
         int l = 0;
         int h = n-1;
-        int mid;
-        int ans=1e9;
+        int m;
+        int ans = 1e9;
         while(l<=h){
-            mid = l+(h-l)/2;
-            if(nums[l]<=nums[mid]){
+            m = l+(h-l)/2;
+            if(nums[l]<=nums[m]){   // left sorted
                 ans = min(ans,nums[l]);
-                l = mid+1;
+                l = m + 1;
             }
             else{
-                 ans = min(ans,nums[mid]);
-                h = mid - 1;
+                // right sorted
+                ans = min(ans,nums[m]);
+                h = m - 1;
             }
         }
         return ans;
