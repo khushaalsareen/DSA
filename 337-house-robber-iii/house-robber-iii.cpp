@@ -14,8 +14,6 @@ public:
     int f(TreeNode*root,unordered_map<TreeNode*, int>&m){
         if(!root)
         return 0;
-        if(!root->left && !root->right)
-        return root->val;
         
         if(m.find(root)!=m.end())
         return m[root];
