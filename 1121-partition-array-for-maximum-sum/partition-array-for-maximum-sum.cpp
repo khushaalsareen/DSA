@@ -1,41 +1,22 @@
 class Solution {
 public:
-    int f(int ind, vector<int>& arr, int k, vector<int>& dp) {
-        int n = arr.size();
-        if (ind == arr.size())
-            return 0;
-        if (dp[ind] != -1)
-            return dp[ind];
-        int len = 0;
-        int maxi = -1e9;
-        int maxSum = -1e9;
-        // trying all partitions
-        for (int j = ind; j < min(n, ind + k); j++) {
-            len++;
-            maxi = max(maxi, arr[j]);
-            int sum = len * maxi + f(j + 1, arr, k, dp);
-            maxSum = max(maxSum, sum);
+    int f(int s, int e, vector<int>&arr, int k,vector<int>&dp){
+        if(s>e)
+        return 0;
+        if(dp[s]!=-1)
+        return dp[s];
+        int ans = 0;
+        int maxi = 0;
+        for(int ind = s;ind<s+k && ind<arr.size();ind++){
+            maxi = max(maxi,arr[ind]);            
+            int currSum = maxi*(ind-s+1) + f(ind+1,e,arr,k,dp);
+            ans = max(ans, currSum);
         }
-        return dp[ind] = maxSum;
+        return dp[s] = ans;
     }
     int maxSumAfterPartitioning(vector<int>& arr, int k) {
         int n = arr.size();
-        vector<int> dp(n + 1, 0);
-        // return f(0,arr,k,dp);
-        dp[n] = 0;
-        for (int ind = n - 1; ind >= 0; ind--) {
-            int len = 0;
-            int maxi = -1e9;
-            int maxSum = -1e9;
-            // trying all partitions
-            for (int j = ind; j < min(n, ind + k); j++) {
-                len++;
-                maxi = max(maxi, arr[j]);
-                int sum = len * maxi + dp[j+1];
-                maxSum = max(maxSum, sum);
-            }
-             dp[ind] = maxSum;
-        }
-        return dp[0];
+        vector<int>dp(n+1,-1);
+        return f(0,n-1,arr,k,dp);
     }
 };
