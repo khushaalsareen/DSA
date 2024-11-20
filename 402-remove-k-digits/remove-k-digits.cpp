@@ -2,31 +2,40 @@ class Solution {
 public:
    string removeKdigits(string num, int k) {
     stack<char> s;
-    int i;
-    for (i = 0; i < num.size(); i++) {
-        while (!s.empty() && num[i] < s.top() && k > 0) {
+
+    // Build the number using a greedy approach
+    for (int i = 0; i < num.size(); i++) {
+        while (!s.empty() && k > 0 && s.top() > num[i]) {
             s.pop();
             k--;
         }
         s.push(num[i]);
     }
-    // Handle the case when k is greater than the size of num
-    while (k > 0 && !s.empty()) {
+
+    // If k is still greater than 0, remove from the end of the stack
+    while (!s.empty() && k > 0) {
         s.pop();
         k--;
     }
+
+    // Build the resulting string
     string ans = "";
     while (!s.empty()) {
         ans.push_back(s.top());
         s.pop();
     }
+
+    // Reverse to get the correct order
     reverse(ans.begin(), ans.end());
+
     // Remove leading zeros
-    int j = 0;
-    while (j < ans.size() && ans[j] == '0') {
-        j++;
+    int i = 0;
+    while (i < ans.size() && ans[i] == '0') {
+        i++;
     }
-    ans = (j == ans.size()) ? "0" : ans.substr(j);
-    return ans;
+
+    // If the result is empty or only contains zeros, return "0"
+    ans = ans.substr(i);
+    return ans.empty() ? "0" : ans;
 }
 };
