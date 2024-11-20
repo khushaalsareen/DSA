@@ -1,41 +1,33 @@
 class Solution {
 public:
-   string removeKdigits(string num, int k) {
-    stack<char> s;
-
-    // Build the number using a greedy approach
-    for (int i = 0; i < num.size(); i++) {
-        while (!s.empty() && k > 0 && s.top() > num[i]) {
+    string removeKdigits(string num, int k) {
+        stack<char>s;
+        s.push(num[0]);
+        for(int i=1;i<num.size();i++){
+            while(!s.empty() && k>0 && (s.top()-'0')>(num[i]-'0')){
+                s.pop();
+                k--;
+            }
+            s.push(num[i]);
+        }
+        string ans = "";
+        while(!s.empty() && k>0){
             s.pop();
             k--;
         }
-        s.push(num[i]);
+        while(!s.empty()){
+            ans.push_back(s.top());
+            s.pop();
+        }
+        
+        reverse(ans.begin(),ans.end());
+        int i = 0;
+        while(i<ans.size() && ans[i]=='0'){
+            
+            i++;
+           
+        }
+        ans = ans.substr(i);
+        return ans.empty()?"0":ans;
     }
-
-    // If k is still greater than 0, remove from the end of the stack
-    while (!s.empty() && k > 0) {
-        s.pop();
-        k--;
-    }
-
-    // Build the resulting string
-    string ans = "";
-    while (!s.empty()) {
-        ans.push_back(s.top());
-        s.pop();
-    }
-
-    // Reverse to get the correct order
-    reverse(ans.begin(), ans.end());
-
-    // Remove leading zeros
-    int i = 0;
-    while (i < ans.size() && ans[i] == '0') {
-        i++;
-    }
-
-    // If the result is empty or only contains zeros, return "0"
-    ans = ans.substr(i);
-    return ans.empty() ? "0" : ans;
-}
 };
