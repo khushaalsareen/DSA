@@ -1,11 +1,13 @@
 class Solution {
 public:
     bool f(int mid, vector<int>&nums, int days){
-        int cnt = 1;
-        int wt = nums[0];
-        for(int i=1;i<nums.size();i++){
+        int cnt = 0;
+        int wt = 0;
+        for(int i=0;i<nums.size();i++){
             if(wt + nums[i]<=mid){
                 wt+=nums[i];
+                if(i==0)
+                cnt++;
             }
             else{
                 cnt++;
