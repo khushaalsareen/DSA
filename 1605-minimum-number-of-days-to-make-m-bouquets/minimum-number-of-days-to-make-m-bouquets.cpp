@@ -1,50 +1,42 @@
 class Solution {
-public:
-    // can you make m bouquets within mid days
-    int f(int mid, vector<int>&nums, int m, int k){
-        int n = nums.size();
+    bool f(int mid, vector<int>&nums, int m, int k){
         int cnt = 0;
-        int i = 0;
-        for(;i<k;i++){
-            if(nums[i]>mid)
-            break;
-        }
-        if(i==k)
-        cnt++;
-        i = i==k? k: i+1;
-        while(i<n){
+        for(int i=0;i<nums.size();){
+            int flower = 0;
             int j = i;
-            int idx = i+k;
-            for(;j<i+k && j<n ;j++){
-                if(nums[j]>mid)
-                {
-                    idx = j+1;
-                    break;
-                }
+            bool var = false;
+            while(j<nums.size() && flower < k && nums[j]<=mid){
+                flower++;
+                var = true;
+                j++;
             }
-            if(idx == j)
+            if(flower == k)
             cnt++;
-            i= idx ;
+            if(var)
+            i = j;
+            else
+            i++;
         }
         return cnt>=m;
     }
-    int minDays(vector<int>&nums, int m, int k) {
+public:
+    int minDays(vector<int>& nums, int m, int k) {
         int n = nums.size();
         if(n<m*1LL*k)
         return -1;
-        int l = *min_element(nums.begin(),nums.end());
+
+        int l = 1;
         int h = *max_element(nums.begin(),nums.end());
         int mid;
         int ans;
         while(l<=h){
-            mid = l+(h-l)/2;
-            cout<<mid<<endl;
-            if(f(mid,nums,m,k)){
+            mid = l + (h-l)/2;
+            bool check = f(mid, nums, m, k);
+            if(check){
                 ans = mid;
                 h = mid - 1;
-            }
-            else
-            l = mid +1;
+            }else
+                l = mid +1 ;
         }
         return ans;
     }
