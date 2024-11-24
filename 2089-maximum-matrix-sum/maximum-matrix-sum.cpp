@@ -10,8 +10,7 @@ public:
                 int c = matrix[i][j];
                 sum+=abs(c);
                 smallestVal = min(smallestVal,abs(c));
-                if((j+1<n && matrix[i][j+1]==0) ||  (i+1<n && matrix[i+1][j]==0))
-                continue;
+                
 
                 if(c<0)
                 {
