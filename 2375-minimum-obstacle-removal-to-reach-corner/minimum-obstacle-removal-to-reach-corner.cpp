@@ -14,7 +14,7 @@ public:
             int currY = p.second.second;
             int currObstacles = p.first;
             if(currX == m-1 && currY == n-1){
-                ans =  min(ans,currObstacles);
+                return currObstacles;
             }
             for(int i=0;i<4;i++){
                 int newX = currX + directions[i].first;
