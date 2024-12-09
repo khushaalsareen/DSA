@@ -1,30 +1,32 @@
 class Solution {
 public:
     vector<bool> isArraySpecial(vector<int>& nums, vector<vector<int>>& queries) {
-        if(nums.size()==1){
-            int len = queries.size();
-            vector<bool>v(len,true);
-            return v;
+        int n = nums.size();
+        vector<bool> v;
+        vector<int> psum(n, 0);
+
+        // Build the prefix sum array
+        for (int i = 1; i < n; i++) {
+            if (nums[i] % 2 == nums[i - 1] % 2) {
+                psum[i] = psum[i - 1] + 1;
+            } else {
+                psum[i] = psum[i - 1];
+            }
         }
-        vector<int>freq(nums.size(),0);
-        for(int i=0;i<nums.size()-1;i++){
-            if(nums[i]%2 == 0 && nums[i+1]%2 == 0)
-                freq[i+1] = 1;
-            else if(nums[i]%2 && nums[i+1]%2)
-                freq[i+1] = 1;
+        for(auto it:psum){
+            cout<<it<<" ";
         }
-        for(int i=1;i<freq.size();i++){
-            freq[i] = freq[i-1] + freq[i];
+        // Process each query
+        for (auto& it : queries) {
+            int l = it[0];
+            int r = it[1];
+
+            int count = (l == 0) ? psum[r] : psum[r] - psum[l];
+
+            // A subarray is "special" if `count == 0` (no consecutive same-parity pairs)
+            v.push_back(count == 0);
         }
-        vector<bool>ans;
-        for(int i=0;i<queries.size();i++){
-            int idx1 = queries[i][0];
-            int idx2 = queries[i][1];
-            if(freq[idx1]!=freq[idx2])
-            ans.push_back(false);
-            else
-            ans.push_back(true);
-        }
-        return ans;
+
+        return v;
     }
 };
