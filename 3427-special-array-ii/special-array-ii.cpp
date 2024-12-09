@@ -21,7 +21,7 @@ public:
             int l = it[0];
             int r = it[1];
 
-            int count = (l == 0) ? psum[r] : psum[r] - psum[l];
+            int count =  psum[r] - psum[l];
 
             // A subarray is "special" if `count == 0` (no consecutive same-parity pairs)
             v.push_back(count == 0);
