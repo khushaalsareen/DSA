@@ -6,14 +6,12 @@ public:
         int i = 0;
         int j = 0;
         for(;i<n;i++){
-            if(i>j)
-            j = i;
+           j = max(i,j);
             //max reachable for every index i
             while(j<n-1 && nums[j]%2 != nums[j+1]%2){
                 j++;
             }
             maxReach[i] = j;
-            
         }
         vector<bool>ans;
         for(auto it:queries){
