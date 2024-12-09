@@ -7,11 +7,7 @@ public:
             v.push_back(nums[i]);
             i++;
         }
-        vector<int>temp;
-        if(i==nums.size()){
-            v.push_back(list);
-            return v;
-        }
+        
     
         v.push_back(list);
 
