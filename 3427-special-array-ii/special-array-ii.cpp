@@ -1,32 +1,38 @@
 class Solution {
 public:
-    vector<bool> isArraySpecial(vector<int>& nums, vector<vector<int>>& queries) {
+    vector<bool> isArraySpecial(vector<int>& nums,
+                                vector<vector<int>>& queries) {
         int n = nums.size();
-        vector<bool> v;
-        vector<int> psum(n, 0);
+        vector<int> maxReach(n);
+        int end = 0;
 
-        // Build the prefix sum array
-        for (int i = 1; i < n; i++) {
-            if (nums[i] % 2 == nums[i - 1] % 2) {
-                psum[i] = psum[i - 1] + 1;
-            } else {
-                psum[i] = psum[i - 1];
+        // Step 1: Compute the maximum reachable index for each starting index
+        for (int start = 0; start < n; start++) {
+            // Ensure 'end' always starts from the current index or beyond
+            end = max(end, start);
+
+            // Expand 'end' as long as adjacent elements have different parity
+            while (end < n - 1 && nums[end] % 2 != nums[end + 1] % 2) {
+                ++end;
             }
-        }
-        for(auto it:psum){
-            cout<<it<<" ";
-        }
-        // Process each query
-        for (auto& it : queries) {
-            int l = it[0];
-            int r = it[1];
 
-            int count =  psum[r] - psum[l];
-
-            // A subarray is "special" if `count == 0` (no consecutive same-parity pairs)
-            v.push_back(count == 0);
+            // Store the farthest index reachable from 'start'
+            maxReach[start] = end;
         }
 
-        return v;
+        vector<bool> ans(queries.size());
+
+        // Step 2: Answer each query based on precomputed 'maxReach'
+        for (int i = 0; i < queries.size(); i++) {
+            vector<int> query = queries[i];
+            int start = query[0];
+            int end = query[1];
+
+            // Check if the query range [start, end] lies within the max
+            // reachable range
+            ans[i] = end <= maxReach[start];
+        }
+
+        return ans;
     }
 };
