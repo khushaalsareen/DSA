@@ -1,18 +1,30 @@
 class Solution {
 public:
     vector<vector<int>> insert(vector<vector<int>>& nums, vector<int>& list) {
-        
-        nums.push_back(list);
-        sort(nums.begin(),nums.end());
         vector<vector<int>>v;
-        v.push_back({nums[0][0],nums[0][1]});
-        for(int i=1;i<nums.size();i++){
-            if(nums[i][0]<=v.back()[1]){
+        int i = 0;
+        while(i<nums.size() && nums[i][1]<list[0]){
+            v.push_back(nums[i]);
+            i++;
+        }
+        vector<int>temp;
+        if(i==nums.size()){
+            v.push_back(list);
+            return v;
+        }
+    
+        v.push_back(list);
+
+        while(i<nums.size()){
+            //overlappibg
+            if(v.back()[1]>=nums[i][0]){
                 v.back()[0] = min(v.back()[0],nums[i][0]);
                 v.back()[1] = max(v.back()[1],nums[i][1]);
             }
-            else
+            else{
                 v.push_back(nums[i]);
+            }
+            i++;
         }
         return v;
     }
