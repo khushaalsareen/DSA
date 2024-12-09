@@ -1,38 +1,26 @@
 class Solution {
 public:
-    vector<bool> isArraySpecial(vector<int>& nums,
-                                vector<vector<int>>& queries) {
+    vector<bool> isArraySpecial(vector<int>& nums, vector<vector<int>>& queries) {
         int n = nums.size();
-        vector<int> maxReach(n);
-        int end = 0;
-
-        // Step 1: Compute the maximum reachable index for each starting index
-        for (int start = 0; start < n; start++) {
-            // Ensure 'end' always starts from the current index or beyond
-            end = max(end, start);
-
-            // Expand 'end' as long as adjacent elements have different parity
-            while (end < n - 1 && nums[end] % 2 != nums[end + 1] % 2) {
-                ++end;
+        vector<int>maxReach(n);
+        int i = 0;
+        int j = 0;
+        for(;i<n;i++){
+            if(i>j)
+            j = i;
+            //max reachable for every index i
+            while(j<n-1 && nums[j]%2 != nums[j+1]%2){
+                j++;
             }
-
-            // Store the farthest index reachable from 'start'
-            maxReach[start] = end;
+            maxReach[i] = j;
+            
         }
-
-        vector<bool> ans(queries.size());
-
-        // Step 2: Answer each query based on precomputed 'maxReach'
-        for (int i = 0; i < queries.size(); i++) {
-            vector<int> query = queries[i];
-            int start = query[0];
-            int end = query[1];
-
-            // Check if the query range [start, end] lies within the max
-            // reachable range
-            ans[i] = end <= maxReach[start];
+        vector<bool>ans;
+        for(auto it:queries){
+            int l = it[0];
+            int r = it[1];
+            ans.push_back(r<=maxReach[l]);
         }
-
         return ans;
     }
 };
