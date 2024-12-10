@@ -11,10 +11,7 @@ public:
         deque<pair<long long int,int>>dq;
         dq.push_back({0,-1});
         for(int i=0;i<n;i++){
-            // int currVal = psum[i];
-            // cout<<currVal<<endl;
-            cout<<dq.front().first<<endl;
-            cout <<!dq.empty() && ((psum[i]-dq.front().first)>=k);
+            
             while(!dq.empty() && ((psum[i]-dq.front().first)>=k)){
         
                 minLen = min(minLen,i-dq.front().second);
