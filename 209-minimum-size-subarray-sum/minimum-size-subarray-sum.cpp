@@ -7,15 +7,16 @@ public:
 
         while (j < n) {
             // Expand the window
-            sum += nums[j];
+            while(j<n && sum<k)
+            sum += nums[j++];
 
             // Check for valid window and try to minimize it
             while (i<n && sum>=k) {
-                minLen = min(minLen, j - i+1);
+                minLen = min(minLen, j - i);
                 sum -= nums[i];
                 i++;
             }
-            j++;
+            
         }
 
         return minLen == 1e9 ? 0 : minLen;
