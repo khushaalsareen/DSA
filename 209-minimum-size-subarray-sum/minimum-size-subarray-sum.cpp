@@ -11,7 +11,7 @@ public:
             j++;
 
             // Check for valid window and try to minimize it
-            while (i<n && ((nums[i]>0 && sum >= k )|| (nums[i]<0 && sum - nums[i]>=k))) {
+            while (i<n && sum>=k) {
                 minLen = min(minLen, j - i);
                 sum -= nums[i];
                 i++;
