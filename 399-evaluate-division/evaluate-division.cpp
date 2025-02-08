@@ -4,6 +4,7 @@ public:
         queue<pair<string,double>>q;
         set<string>s;
         if (m.find(start) == m.end() || m.find(end) == m.end()) return -1.0;
+           if (start == end) return 1.0;
         q.push({start,1});
         s.insert(start);
         while(!q.empty()){
