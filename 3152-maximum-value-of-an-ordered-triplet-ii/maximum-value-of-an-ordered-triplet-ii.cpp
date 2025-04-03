@@ -24,10 +24,8 @@ public:
       long long ans = 0;
       for(int m=1;m<n-1;m++){
         long long v1 = (pmax[m-1]-nums[m])*1LL*smax[m+1];
-        long long v2 = (pmax[m-1]-nums[m])*1LL*smin[m+1];
-        long long v3 = (pmin[m-1]-nums[m])*1LL*smin[m+1];
-        long long v4 = (pmin[m-1]-nums[m])*1LL*smax[m+1];
-        ans = max({ans,v1,v2,v3,v4});
+        
+        ans = max({ans,v1});
       }
       return ans;
     }
