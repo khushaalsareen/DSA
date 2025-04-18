@@ -1,27 +1,24 @@
 class Solution {
 public:
-    bool splitArraySameAverage(vector<int>& nums) {
-        int n = nums.size(), totalSum = accumulate(nums.begin(), nums.end(), 0);
-        sort(nums.begin(), nums.end());
-
-        // dp[k] = set of all sums possible using k elements
-        vector<unordered_set<int>> dp(n + 1);
-        dp[0].insert(0);
-
-        for (int num : nums) {
-            for (int k = n - 1; k >= 0; --k) {
-                for (int s : dp[k]) {
-                    dp[k + 1].insert(s + num);
-                }
-            }
+bool dfs(int i, int sumN, int N, vector<int>& A) {
+        int n = A.size();
+        if(N == 0) return sumN == 0;
+        if(A[i] > sumN/N) return false;
+        for(int j = i; j < n - N + 1; ++j) {
+            if(j > i && A[j] == A[j-1]) continue;
+            if(dfs(j+1,sumN-A[j],N-1,A)) return true;
         }
-
-        for (int k = 1; k < n; ++k) {
-            if ((totalSum * k) % n != 0) continue;
-            int target = (totalSum * k) / n;
-            if (dp[k].count(target)) return true;
-        }
-
         return false;
     }
+    bool splitArraySameAverage(vector<int>& A) {
+        int n =A.size(), sum = 0;
+        for(auto c : A) sum += c;
+        sort(A.begin(),A.end());
+        for(int len = 1; len <= n/2; ++len) {
+            if(sum * len % n ) continue;
+            if(dfs(0,sum*len/n,len,A)) return true;
+        }
+        return false;
+    }
+	
 };
