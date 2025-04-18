@@ -1,35 +1,25 @@
 class Solution {
 public:
     bool splitArraySameAverage(vector<int>& nums) {
-        int n = nums.size();
-        int totalSum = accumulate(nums.begin(), nums.end(), 0);
+        int n = nums.size(), totalSum = accumulate(nums.begin(), nums.end(), 0);
+        sort(nums.begin(), nums.end());
 
-        // Memoization map: key = i|k|targetSum
-        unordered_map<string, bool> memo;
+        // dp[k] = set of all sums possible using k elements
+        vector<unordered_set<int>> dp(n + 1);
+        dp[0].insert(0);
 
-        // Recursive function to check if we can pick k elements starting from i that sum to target
-        function<bool(int, int, int)> dfs = [&](int i, int k, int target) {
-            if (k == 0) return target == 0;
-            if (i >= n || k < 0 || target < 0) return false;
+        for (int num : nums) {
+            for (int k = n - 1; k >= 0; --k) {
+                for (int s : dp[k]) {
+                    dp[k + 1].insert(s + num);
+                }
+            }
+        }
 
-            string key = to_string(i) + "|" + to_string(k) + "|" + to_string(target);
-            if (memo.count(key)) return memo[key];
-
-            // Option 1: Pick nums[i]
-            if (dfs(i + 1, k - 1, target - nums[i])) return memo[key] = true;
-
-            // Option 2: Skip nums[i]
-            if (dfs(i + 1, k, target)) return memo[key] = true;
-
-            return memo[key] = false;
-        };
-
-        // Try every group size from 1 to n-1
         for (int k = 1; k < n; ++k) {
-            if ((totalSum * k) % n != 0) continue; // target sum must be an integer
-
-            int targetSum = (totalSum * k) / n;
-            if (dfs(0, k, targetSum)) return true;
+            if ((totalSum * k) % n != 0) continue;
+            int target = (totalSum * k) / n;
+            if (dp[k].count(target)) return true;
         }
 
         return false;
