@@ -1,22 +1,17 @@
 class Solution {
 public:
     int numRabbits(vector<int>& answers) {
-        sort(answers.begin(),answers.end());
-        int coverTill = -1;
-        int ind = 0;
-        int n = answers.size();
-        int cnt = 0;
-        while(ind<n){
-            int val = answers[ind];
-            if(ind>0 && val == answers[ind-1] && ind<=coverTill){
-                ind++;
-            }
+        if(answers.empty()) return 0;
+        unordered_map<int,int> m;
+        int res=0;
+        for(int a:answers){
+            if(a==0) res++;
             else{
-                cnt+=(val+1);
-                coverTill = ind + val ;
-                ind++;
-            }
+                if(m[a]==0) res+=a+1;
+                m[a]++;
+                if(m[a]==a+1) m[a]=0;
+            }           
         }
-        return cnt;
+        return res;
     }
 };
