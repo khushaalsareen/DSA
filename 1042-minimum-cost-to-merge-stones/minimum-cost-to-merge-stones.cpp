@@ -22,6 +22,8 @@ public:
     }
     int mergeStones(vector<int>& stones, int k) {
         int n = stones.size();
+        if((n-1)%(k-1)!=0)
+            return -1;
         vector<int>psum(n,0);
         psum[0] = stones[0];
         for(int i=1;i<n;i++){
