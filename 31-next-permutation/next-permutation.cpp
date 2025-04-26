@@ -15,14 +15,22 @@ public:
         }
         int num = nums[i-1];
         // int idx = upper_bound(nums.begin()+i, nums.end(), num, greater<int>()) - nums.begin();
-        int j = n-1;
-        while (nums[j] <= num) { // find just bigger element
-            j--;
+          int ans = -1;
+          int l = i;
+          int r = n-1;
+    while (l <= r) {
+        int mid = (l + r) / 2;
+        if (nums[mid] > num) {
+            ans = mid; // mid could be the answer
+            l = mid + 1; // move right to find a smaller valid number
+        } else {
+            r = mid - 1;
         }
+    }
 
-        swap(nums[i-1],nums[j]);
+        swap(nums[i-1],nums[ans]);
         int k = i;
-        j = n-1;
+        int j = n-1;
         while(k<j){
             swap(nums[k],nums[j]);
             k++;
