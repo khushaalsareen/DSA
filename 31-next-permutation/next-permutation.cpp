@@ -2,39 +2,31 @@ class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
         int n = nums.size();
+        if(n==1)
+        return;
         int i = n-1;
-        int j;
-        bool flag = false;
-        while(i>0){
-            if(nums[i]>nums[i-1]){
-                j = i-1;
-                flag = true;
-                break;
-            }
+        while(i>0 && nums[i-1]>=nums[i]){
             i--;
         }
-        if(flag == false)
+        if(i==0)
         {
-            int x1 = 0;
-            int x2 = n-1;
-            while(x1<x2){
-                swap(nums[x1],nums[x2]);
-                x1++;
-                x2--;
-            }
-
+            reverse(nums.begin(),nums.end());
+            return;
         }
-        else{
-            int idx = -1;
-            for(int k = j+1;k<n;k++){
-                if(nums[k]>nums[j]){
-                    idx = k;
-                }
-                else
-                break;
-            }
-            swap(nums[j],nums[idx]);
-            reverse(nums.begin()+j+1,nums.end());
+        int num = nums[i-1];
+        // int idx = upper_bound(nums.begin()+i, nums.end(), num, greater<int>()) - nums.begin();
+        int j = n-1;
+        while (nums[j] <= num) { // find just bigger element
+            j--;
+        }
+
+        swap(nums[i-1],nums[j]);
+        int k = i;
+        j = n-1;
+        while(k<j){
+            swap(nums[k],nums[j]);
+            k++;
+            j--;
         }
     }
 };
