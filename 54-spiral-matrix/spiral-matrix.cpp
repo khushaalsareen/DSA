@@ -4,32 +4,38 @@ public:
         vector<int>ans;
         int m = nums.size();
         int n = nums[0].size();
-        int left = 0;
-        int right = n-1;
-        int top = 0;
-        int bottom = m-1;
-        while(left<=right && top<=bottom){
-            for(int i=left;i<=right;i++){
-                ans.push_back(nums[top][i]);
+        int tr = 0;
+        int br = m-1;
+        int lc = 0;
+        int rc = n-1;
+        while(tr<=br && lc<=rc){
+            // print tr
+            if(tr<=br){
+            for(int c = lc;c<=rc;c++){
+                ans.push_back(nums[tr][c]);
             }
-            top++;
-            if(left<=right && top<=bottom){
-            for(int i=top;i<=bottom;i++){
-                ans.push_back(nums[i][right]);
+            tr++;
             }
-            right--;
+            // print rc
+            if(lc<=rc)          
+            {for(int r = tr;r<=br;r++){
+                ans.push_back(nums[r][rc]);
             }
-            if(left<=right && top<=bottom){
-            for(int i=right;i>=left;i--){
-                ans.push_back(nums[bottom][i]);
+            rc--;
             }
-            bottom--;
+            // print br
+            if(tr<=br){
+            for(int c = rc;c>=lc;c--){
+                ans.push_back(nums[br][c]);
             }
-            if(left<=right && top<=bottom){
-            for(int i=bottom;i>=top;i--){
-                ans.push_back(nums[i][left]);
+            br--;
             }
-            left++;
+            // print lc
+            if(lc<=rc){
+            for(int r = br;r>=tr;r--){
+                ans.push_back(nums[r][lc]);
+            }
+            lc++;
             }
         }
         return ans;
