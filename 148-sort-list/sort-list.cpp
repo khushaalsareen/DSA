@@ -9,63 +9,65 @@
  * };
  */
 class Solution {
-public:
-    ListNode*middle(ListNode*head){
-        ListNode* slow =head;
-        ListNode* fast = head;
-        while(fast && fast->next && fast->next->next){
-            slow = slow->next;
-            fast = fast->next->next;
-        }
-        return slow;
+   ListNode* getMiddle(ListNode* head) {
+    if (!head || !head->next) return head;
+    ListNode* slow = head;
+    ListNode* fast = head->next;
+
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
     }
-    ListNode*merge(ListNode*h1, ListNode*h2){
-        ListNode*head = NULL;
-        ListNode*prev =NULL;
-        ListNode*tmp1 = h1;
-        ListNode*tmp2 = h2;
-        while(tmp1 && tmp2){
-            if(head==NULL){
-                if(tmp1->val < tmp2->val){
-                    head = tmp1;
-                    prev = head;
-                    tmp1 = tmp1->next;
+
+    return slow;
+}
+
+
+    ListNode * merge(ListNode* head1, ListNode * head2){
+        ListNode * newHead = NULL;
+        ListNode * tmp = NULL;
+        ListNode * t1 = head1;
+        ListNode * t2 = head2;
+        while(t1 && t2){
+            if(t1->val < t2->val){
+                if(newHead == NULL){
+                    newHead = t1;
+                    tmp = t1;
                 }
                 else{
-                    head = tmp2;
-                    prev = head;
-                    tmp2 = tmp2->next;
+                    tmp->next = t1;
+                    tmp = tmp->next;
                 }
+                t1  = t1->next;
             }
             else{
-                if(tmp1->val < tmp2->val){
-                    prev->next = tmp1;
-                    tmp1 = tmp1->next;
-                    prev = prev->next;
+                if(newHead == NULL){
+                    newHead = t2;
+                    tmp = t2;
                 }
                 else{
-                    prev->next = tmp2;
-                    tmp2 = tmp2->next;
-                    prev = prev->next;
+                    tmp->next = t2;
+                    tmp = tmp->next; 
                 }
+                t2  = t2->next;
             }
+        }
+        if(t1)
+        tmp->next = t1;
+        else
+        tmp->next = t2;
+
+        return newHead;
     }
-        if(tmp1)
-        prev->next = tmp1;
-        if(tmp2)
-        prev->next = tmp2;
-        return head;
-    }
+public:
     ListNode* sortList(ListNode* head) {
         if(!head || !head->next)
         return head;
-        ListNode* midNode = middle(head); //
-        cout<<midNode->val<<endl;
-        ListNode*nextNode = midNode->next;
-        midNode->next = NULL;
-        ListNode*h1 = sortList(head);
-        ListNode*h2 = sortList(nextNode);
-        ListNode*newHead = merge(h1,h2);
-        return newHead;
+        ListNode * mid = getMiddle(head);
+        ListNode * nextNode = mid->next;
+        mid->next = NULL;
+        ListNode * head1 = sortList(head);
+        ListNode * head2 = sortList(nextNode);
+        return merge(head1,head2);
     }
 };
