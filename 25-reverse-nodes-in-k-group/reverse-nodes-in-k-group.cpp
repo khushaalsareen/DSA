@@ -25,13 +25,14 @@ public:
         if(!head || !head->next)
         return head;
         ListNode * tmp = head;
-        int cnt = 0;
+        int cnt = 1;
         // if theer are k nodes then after k-1 steps the tmp will point to kth node and if it points to null means there are not k nodes
         for(int i=0;i<k-1 && tmp;i++){
-            tmp = tmp->next;
+            if(tmp->next)
             cnt++;
+            tmp = tmp->next;
         }
-        if(tmp == NULL)
+        if(cnt!=k)
         return head;
 
         ListNode * next = tmp->next;
