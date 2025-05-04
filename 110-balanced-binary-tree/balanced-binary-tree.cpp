@@ -10,21 +10,19 @@
  * };
  */
 class Solution {
-public:
-    pair<bool,int> height(TreeNode*root){
+        int height(TreeNode*root){
         if(!root)
-        return {true,0};
+        return 0;
 
-        pair<bool,int> left = height(root->left);
-        pair<bool,int> right = height(root->right);
-
-        bool b = left.first && right.first && abs(left.second - right.second)<=1;
-        int lh = left.second;
-        int rh = right.second;
-        int h =  1 + max(lh,rh);
-        return {b,h};
+        int lh = height(root->left);
+        int rh = height(root->right);
+        return 1 + max(lh,rh);
     }
+public:
     bool isBalanced(TreeNode* root) {
-        return height(root).first;
+        if(!root || (!root->left && !root->right))
+        return true;
+
+        return isBalanced(root->left) && isBalanced(root->right) && abs(height(root->left)-height(root->right))<=1;
     }
 };
