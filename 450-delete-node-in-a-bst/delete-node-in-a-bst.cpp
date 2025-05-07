@@ -1,44 +1,50 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
-public:
-    TreeNode* deleteNode(TreeNode* root, int key) {
-        if (root == nullptr) return nullptr;
+    TreeNode* par = nullptr;
+    TreeNode* toDel = nullptr;
 
-        if (root->val > key) {
-            root->left = deleteNode(root->left, key);
-        } else if (root->val < key) {
-            root->right = deleteNode(root->right, key);
-        } else {
-            if (root->left == nullptr && root->right == nullptr) {
-                return nullptr;
-            } else if (root->left != nullptr && root->right == nullptr) {
-                return root->left;
-            } else if (root->left == nullptr && root->right != nullptr) {
-                return root->right;
-            } else {
-                int maxVal = findMax(root->left);
-                root->val = maxVal;
-                root->left = deleteNode(root->left, maxVal);
-                // return root;
-            }
+public:
+    bool search(TreeNode* root, int key, TreeNode* prev) {
+        if (!root) return false;
+        if (root->val == key) {
+            par = prev;
+            toDel = root;
+            return true;
         }
-        return root;
+        return search(root->left, key, root) || search(root->right, key, root);
     }
 
-    int findMax(TreeNode* root) {
-        while (root->right != nullptr) {
-            root = root->right;
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if (!root) return nullptr;
+
+        bool found = search(root, key, nullptr);
+        if (!found) return root;
+
+        // Case: Node has two children
+        if (toDel->left && toDel->right) {
+            TreeNode* pred = toDel->left;
+            TreeNode* predParent = nullptr;
+            while (pred->right) {
+                predParent = pred;
+                pred = pred->right;
+            }
+            toDel->val = pred->val;
+            // Now delete pred
+            if (!predParent)
+                toDel->left = pred->left; // pred was immediate left
+            else
+                predParent->right = pred->left;
         }
-        return root->val;
+        // Case: Node has one child or is a leaf
+        else {
+            TreeNode* child = toDel->left ? toDel->left : toDel->right;
+            if (!par) {
+                // deleting the root node
+                return child;
+            }
+            if (par->left == toDel) par->left = child;
+            else par->right = child;
+        }
+
+        return root;
     }
 };
