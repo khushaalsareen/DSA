@@ -8,53 +8,53 @@
  * };
  */
 class Solution {
-public:
-    void generateParent(TreeNode*root, unordered_map<TreeNode*,TreeNode*>&m){
-        queue<TreeNode*>q;
-        q.push(root);
-        while(!q.empty()){
-            TreeNode* node = q.front();
-            q.pop();
-            if(node->left)
-            {q.push(node->left);
-             m[node->left] = node;
-            }
-            if(node->right)
-           { q.push(node->right);
-             m[node->right] = node;
-           }
-        }
-    }
-    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+    unordered_map<TreeNode*,TreeNode*>parent;
+    vector<int>ans;
+    unordered_set<TreeNode*>s;
+    void generateParent(TreeNode*root, TreeNode*par){
         if(!root)
-        return {};
-        unordered_map<TreeNode*,TreeNode*>m;
-        generateParent(root,m);
+        return;
+        parent[root] = par;
+        generateParent(root->left,root);
+        generateParent(root->right,root);
+    }
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        ans.clear();
+        parent.clear();
+        s.clear();
+        if(!root->left && !root->right){
+            if(k==0)
+            {
+                ans.push_back(root->val);
+            }
+            return ans;
+        }
+        generateParent(root->left,root);
+        generateParent(root->right,root);
         queue<pair<TreeNode*,int>>q;
-        q.push({target,k});
-        unordered_set<TreeNode*>visited;
-        vector<int>ans;
-        visited.insert(target);
+        q.push({target,0});
+        s.insert(target);
         while(!q.empty()){
-            pair<TreeNode*, int>p = q.front();
+            pair<TreeNode*,int> p = q.front();
             q.pop();
             TreeNode*currNode = p.first;
             int currDist = p.second;
-            if(currDist<0)
-            break;
-            if(currDist==0)
-            ans.push_back(currNode->val);
-            if(currNode->left && visited.find(currNode->left)==visited.end()){
-                q.push({currNode->left,currDist-1});
-                visited.insert(currNode->left);
+            if(currDist == k)
+            {ans.push_back(currNode->val);
+            continue;
             }
-            if(currNode->right && visited.find(currNode->right)==visited.end()){
-                q.push({currNode->right,currDist-1});
-                visited.insert(currNode->right);
+            if(currNode->left && s.find(currNode->left)==s.end()){
+                q.push({currNode->left,currDist+1});
+                s.insert(currNode->left);
             }
-            if(m[currNode] && visited.find(m[currNode])==visited.end()){
-                q.push({m[currNode],currDist-1});
-                visited.insert(m[currNode]);
+            if(currNode->right && s.find(currNode->right)==s.end()){
+                q.push({currNode->right,currDist+1});
+                s.insert(currNode->right);
+            }
+            if(parent.find(currNode)!=parent.end() && s.find(parent[currNode])==s.end()){
+                s.insert(parent[currNode]);
+                q.push({parent[currNode],currDist+1});
             }
         }
         return ans;
