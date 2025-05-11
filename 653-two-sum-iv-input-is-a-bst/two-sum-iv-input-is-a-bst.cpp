@@ -12,7 +12,6 @@
 
 class BSTIterator {
     stack<TreeNode*>s;
-    stack<TreeNode*>s2;
     void leftPush(TreeNode*root){ // this is basically doing in ascending order pushing on stack
         if(!root)
         return;
@@ -27,13 +26,15 @@ class BSTIterator {
         return;
         TreeNode*tmp = root;
         while(tmp){
-            s2.push(tmp);
+            s.push(tmp);
             tmp = tmp->right;
         }        
     }
 public:
-    BSTIterator(TreeNode* root) {
+    BSTIterator(TreeNode* root, bool check) {
+        if(check)
         leftPush(root);
+        else
         rightPush(root);
     }
     
@@ -49,25 +50,23 @@ public:
     }
 
     int prev(){
-        TreeNode * prevNode = s2.top();
-        s2.pop();
+        TreeNode * prevNode = s.top();
+        s.pop();
         rightPush(prevNode->left);
         return prevNode->val;
     }
 
     int hasPrev(){
-        return s2.size()>0;
+        return s.size()>0;
     }
 };
 
 class Solution {
 public:
     bool findTarget(TreeNode* root, int k) {
-        if(!root->left && !root->right)
-        return false;
 
-        BSTIterator l(root);
-        BSTIterator r(root);
+        BSTIterator l(root,true);
+        BSTIterator r(root,false);
 
         int i = l.next();
         int j = r.prev();
