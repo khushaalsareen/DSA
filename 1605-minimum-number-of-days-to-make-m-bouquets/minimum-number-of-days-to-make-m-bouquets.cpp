@@ -1,42 +1,44 @@
 class Solution {
-    bool f(int mid, vector<int>&nums, int m, int k){
+    int f(vector<int>&nums, int mid,int k){
+        int n = nums.size();
         int cnt = 0;
-        for(int i=0;i<nums.size();){
-            int flower = 0;
-            int j = i;
-            bool var = false;
-            while(j<nums.size() && flower < k && nums[j]<=mid){
-                flower++;
-                var = true;
-                j++;
+        int flowers = 0;
+        for(int i=0;i<n;i++){
+            if(nums[i]<=mid){
+                // it will bloom
+                flowers++;
+                if(flowers==k)
+                {cnt++;
+                flowers = 0;
+                }
             }
-            if(flower == k)
-            cnt++;
-            if(var)
-            i = j;
-            else
-            i++;
+            else{
+                flowers = 0;
+            }
         }
-        return cnt>=m;
+        return cnt;
     }
 public:
     int minDays(vector<int>& nums, int m, int k) {
         int n = nums.size();
-        if(n<m*1LL*k)
+        if(m*1LL*k>n)
         return -1;
 
         int l = 1;
         int h = *max_element(nums.begin(),nums.end());
-        int mid;
         int ans;
         while(l<=h){
-            mid = l + (h-l)/2;
-            bool check = f(mid, nums, m, k);
-            if(check){
+            int mid = l+(h-l)/2;
+            // can I maake at least m bouquets having k flowers each in mid days
+            // no of bouquets I can make
+            int cnt = f(nums,mid,k);
+            if(cnt<m){
+                l = mid + 1;
+            }
+            else{
                 ans = mid;
-                h = mid - 1;
-            }else
-                l = mid +1 ;
+                h = mid-1;
+            }
         }
         return ans;
     }
