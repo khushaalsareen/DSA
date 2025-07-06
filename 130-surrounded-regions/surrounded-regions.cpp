@@ -1,44 +1,58 @@
 class Solution {
-public:
-    void dfs(int sx, int sy, vector<vector<char>>& board,vector<vector<int>>& visited,vector<pair<int,int>>&dir){
+    vector<pair<int,int>>directions = {{1,0},{-1,0},{0,-1},{0,1}};
+    void dfs(int sx,int sy, vector<vector<char>>& board, vector<vector<int>>& visited){
         visited[sx][sy] = 1;
-        board[sx][sy] = 'a';
-        for(int i=0;i<dir.size();i++){
-            int newX = sx + dir[i].first;
-            int newY = sy + dir[i].second;
-            if(newX>=0 && newY>=0 && newX<board.size() && newY<board[0].size() && visited[newX][newY]==0 && board[newX][newY]=='O'){
-                dfs(newX,newY,board,visited,dir);
+        board[sx][sy] = '@';
+        for(auto it:directions){
+            int newX = sx + it.first;
+            int newY = sy + it.second;
+            if(newX>=0 && newX<board.size() && newY>=0 && newY<board[0].size() && !visited[newX][newY] && board[newX][newY]=='O'){
+                dfs(newX,newY,board,visited);
             }
         }
-        
     }
+public:
     void solve(vector<vector<char>>& board) {
-        vector<vector<int>>visited(board.size(),vector<int>(board[0].size(),0));
-        vector<pair<int,int>>directions = {{0,1},{0,-1},{-1,0},{1,0}};
-        for(int i=0;i<board[0].size();i++){
-            if(board[0][i]=='O' && visited[0][i]==0)
-            dfs(0,i,board,visited,directions);
+        int m = board.size();
+        int n = board[0].size();
+        vector<vector<int>>visited(m,vector<int>(n,0));
+        // first row
+        int r = 0;
+        for(int c = 0;c<n;c++){
+            if(board[r][c]=='O' && !visited[r][c])
+            dfs(r,c,board,visited);
         }
-        for(int i=0;i<board[0].size();i++){
-            if(board[board.size()-1][i]=='O' && visited[board.size()-1][i]==0)
-            dfs(board.size()-1,i,board,visited,directions);
+        // last row
+        r = m-1;
+        for(int c = 0;c<n;c++){
+            if(!visited[r][c] && board[r][c]=='O')
+                dfs(r,c,board,visited);
         }
-        for(int i=0;i<board.size();i++){
-            if(board[i][0]=='O' && visited[i][0]==0)
-            dfs(i,0,board,visited,directions);
+        // first col
+        int c = 0;
+        for(int r = 0;r<m;r++){
+            if(board[r][c]=='O' && !visited[r][c])
+                dfs(r,c,board,visited);
         }
-        for(int i=0;i<board.size();i++){
-            if(board[i][board[0].size()-1]=='O' && visited[i][board[0].size()-1]==0)
-            dfs(i,board[0].size()-1,board,visited,directions);
+        // last col
+        c = n-1;
+        for(int r = 0;r<m;r++){
+            if(!visited[r][c] && board[r][c]=='O')
+                dfs(r,c,board,visited);
         }
-        for(int i=0;i<board.size();i++){
-            for(int j=0;j<board[0].size();j++){
-                if(board[i][j]=='O')
-                board[i][j]='X';
-                if(board[i][j]=='a')
-                board[i][j] = 'O';
+
+        for(auto &it:board){
+            for(auto &c:it){
+                if(c=='O')
+                    c = 'X';
             }
         }
-        
+
+        for(auto &it:board){
+            for(auto &c:it){
+                if(c=='@')
+                    c = 'O';
+            }
+        }
     }
 };
