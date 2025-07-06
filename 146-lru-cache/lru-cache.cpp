@@ -1,104 +1,84 @@
-class Node {
+class Node{
 public:
+    int key;
     int val;
-    Node* next;
-    Node* prev;
-    Node(int val, Node* next = nullptr, Node* prev = nullptr) {
+    Node*next;
+    Node*prev;
+
+    Node(int key, int val){
+        this->key = key;
         this->val = val;
-        this->next = next;
-        this->prev = prev;
+        next = NULL;
+        prev = NULL;
     }
 };
 
 class LRUCache {
-    int maxSize;
-    int currSize;
-    Node* head;
-    Node* tail;
-    unordered_map<int, pair<int, Node*>> m;
+    int capacity;
+    unordered_map<int,Node*>m;
+    Node*head;
+    Node*tail;
+
+    void deleteNode(Node*node){
+        Node * prev = node->prev;
+        Node * next = node->next;
+        prev->next = next;
+        next->prev = prev;
+    }
+
+    void insertAfterHead(Node * node){
+        Node* next = head->next;
+        head->next = node;
+        node->next = next;
+        node->prev = head;
+        next->prev = node;
+    }
 
 public:
     LRUCache(int capacity) {
-        maxSize = capacity;
-        currSize = 0;
-        head = nullptr;
-        tail = nullptr;
+        this->capacity = capacity;
+        m.clear();
+        head = new Node(-1,-1);
+        tail = new Node(-1,-1);
+        head->next = tail;
+        tail->prev = head;
     }
-
+    
     int get(int key) {
-        if (m.find(key) == m.end())
-            return -1;
-
-        Node* node = m[key].second;
-
-        if (node != tail) {
-            // Detach node from its current position
-            if (node == head) {
-                head = head->next;
-                if (head) head->prev = nullptr;
-            } else {
-                if (node->next) node->next->prev = node->prev;
-                if (node->prev) node->prev->next = node->next;
-            }
-
-            // Move node to the tail
-            tail->next = node;
-            node->prev = tail;
-            node->next = nullptr;
-            tail = node;
-        }
-
-        return m[key].first;
+        if(m.find(key)==m.end())
+        return -1;
+        Node * node = m[key]; // found address of node
+        deleteNode(node); // delete node from curr pos
+        insertAfterHead(node); // this is latest used node so insrt afeetr head
+        return node->val;
     }
-
+    
     void put(int key, int value) {
-        if (m.find(key) != m.end()) {
-            // Key already exists, update the value and move the node to the tail
-            m[key].first = value;
-            Node* node = m[key].second;
-
-            if (node != tail) {
-                // Detach node from its current position
-                if (node == head) {
-                    head = head->next;
-                    if (head) head->prev = nullptr;
-                } else {
-                    if (node->next) node->next->prev = node->prev;
-                    if (node->prev) node->prev->next = node->next;
-                }
-
-                // Move node to the tail
-                tail->next = node;
-                node->prev = tail;
-                node->next = nullptr;
-                tail = node;
-            }
-        } else {
-            // Insert new key
-            Node* newNode = new Node(key);
-            m[key] = {value, newNode};
-            currSize++;
-
-            if (tail == nullptr) {
-                // First node in the cache
-                head = newNode;
-                tail = newNode;
-            } else {
-                // Add new node to the tail
-                tail->next = newNode;
-                newNode->prev = tail;
-                tail = newNode;
-            }
-
-            // If cache exceeds capacity, remove least recently used (head)
-            if (currSize > maxSize) {
-                Node* toDelete = head;
-                head = head->next;
-                if (head) head->prev = nullptr;
-                m.erase(toDelete->val);
-                delete toDelete;
-                currSize--;
-            }
+        if(m.find(key)!=m.end()){
+            // node with this value already exists so simpley update value
+            Node * node = m[key];
+            node->val = value;
+            deleteNode(node); // delete at that postioin
+            insertAfterHead(node); // insert after node this 
         }
+        else{
+        if(m.size()==capacity){
+            Node * toDelete = tail->prev;
+            deleteNode(toDelete); // delete this node
+            int key_del = toDelete->key;
+            m.erase(key_del);
+            delete toDelete;
+        }
+        Node * newNode = new Node(key,value);
+        insertAfterHead(newNode); // this is latest accessed node
+        m[key] = newNode;
+    }
     }
 };
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
