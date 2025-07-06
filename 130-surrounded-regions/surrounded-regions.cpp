@@ -45,14 +45,16 @@ public:
             for(auto &c:it){
                 if(c=='O')
                     c = 'X';
-            }
-        }
-
-        for(auto &it:board){
-            for(auto &c:it){
-                if(c=='@')
+                else if(c=='@')
                     c = 'O';
             }
         }
+
+        // for(auto &it:board){
+        //     for(auto &c:it){
+        //         if(c=='@')
+        //             c = 'O';
+        //     }
+        // }
     }
 };
