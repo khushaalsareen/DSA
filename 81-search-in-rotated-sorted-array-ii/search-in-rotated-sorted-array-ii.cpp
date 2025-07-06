@@ -21,7 +21,7 @@ public:
                 l = mid+1;
             }
             else{ // right half is sorted
-                if(nums[mid]<target and target<=nums[h])
+                if(nums[mid]<=target and target<=nums[h])
                 l = mid+1;
                 else
                 h = mid-1;
