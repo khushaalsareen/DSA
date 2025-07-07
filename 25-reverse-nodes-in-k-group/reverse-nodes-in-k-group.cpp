@@ -9,35 +9,32 @@
  * };
  */
 class Solution {
-    ListNode * reverse(ListNode * head){
-        ListNode * prev = NULL;
+      ListNode * reverse(ListNode* head){
+        if(!head || !head->next)
+        return head;
         ListNode * curr = head;
-        while(curr){
-            ListNode * tmp = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = tmp;
-        }
-        return prev;
+        ListNode * nextNode = curr->next;
+        curr->next = NULL;
+        ListNode * newHead = reverse(nextNode);
+        nextNode->next = curr;
+        return newHead;
     }
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
-        if(!head || !head->next)
-        return head;
         ListNode * tmp = head;
-        int cnt = 1;
-        // if theer are k nodes then after k-1 steps the tmp will point to kth node and if it points to null means there are not k nodes
-        for(int i=0;i<k-1 && tmp;i++){
-            
+        ListNode*prev = NULL;
+        int cnt = 0;
+        while(cnt<k && tmp!=NULL){
+            cnt++;
+            prev = tmp;
             tmp = tmp->next;
         }
-        if(!tmp)
+        if(cnt<k)
         return head;
-
-        ListNode * next = tmp->next;
-        tmp->next = NULL;
-        ListNode * revHead = reverse(head);
-        head->next = reverseKGroup(next,k);
-        return revHead;
+        ListNode * nextNode = tmp;
+        prev->next = NULL;
+        ListNode * newHead = reverse(head);
+        head->next = reverseKGroup(nextNode,k);
+        return newHead; 
     }
 };
