@@ -10,19 +10,23 @@
  * };
  */
 class Solution {
-    int ans = -1e9;
-    int maxSum(TreeNode*root){
+    int findSum(TreeNode * root, int &ans){
         if(!root)
         return 0;
 
-        int ls = maxSum(root->left);
-        int rs = maxSum(root->right);
-        ans = max(ans,root->val + max(ls,0) + max(rs,0));
-        return root->val + max({ls,rs,0});
+        int sumLeft = findSum(root->left,ans);
+        int sumRight = findSum(root->right,ans);
+        int currSum = root->val +  max({sumLeft,sumRight,sumLeft + sumRight,0});
+        ans = max(ans,currSum);
+
+        return root->val + max({sumLeft,sumRight,0});
     }
 public:
     int maxPathSum(TreeNode* root) {
-         maxSum(root); // max sum path passing through root
-         return ans;    // max sum path that takes a turn about any node n in tree is final ans
+        if(!root)
+        return 0;
+        int ans = -1e9;
+         findSum(root,ans);
+         return ans;
     }
 };
