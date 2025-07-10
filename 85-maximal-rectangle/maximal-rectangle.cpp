@@ -1,55 +1,57 @@
 class Solution {
-public:
-    int largestRectangleArea(vector<int>& nums) {
-        int n = nums.size();
+    int largest(auto& v){
         stack<int>s;
-        vector<int>PSE(n,-1);
-        vector<int>NSE(n,n);
-        s.push(n-1);
-        int maxArea = 0;
-        for(int i=n-2;i>=0;i--){
-            // when am I removing from stack obly if nums[i]<nums[s.top()]
-            while(!s.empty() and nums[i]<nums[s.top()]){
-                PSE[s.top()] = i;
+        int n = v.size();
+        s.push(0);
+        int ans = 0;
+        vector<int>nse(n,n);
+        vector<int>pse(n,-1);
+        for(int i = 1;i < n ; i++){
+            while(!s.empty() && v[i]<v[s.top()]){
+                nse[s.top()] = i;
                 s.pop();
             }
-            // else I am pushing in stack always since I wannna find PSE or NSE OF each element
             s.push(i);
         }
         while(!s.empty())
-        s.pop();
-        s.push(0);
-        for(int i = 1;i<n;i++){
-            while(!s.empty() and nums[i]<nums[s.top()]){
-                NSE[s.top()] = i;
+            s.pop();
+            
+        s.push(n-1);
+        for(int i=n-2;i>=0;i--){
+            while(!s.empty() && v[i]<v[s.top()]){
+                pse[s.top()] = i;
                 s.pop();
             }
             s.push(i);
         }
-        
         for(int i=0;i<n;i++){
-            int psI = PSE[i];
-            int nsI = NSE[i];
-            int x = (nsI-psI-1);
-            maxArea = max(maxArea, x*nums[i]);
+            int curr = v[i] * (nse[i]-pse[i]-1);
+            ans = max(ans,curr);
         }
-        return maxArea;
+        return ans;
     }
+public:
     int maximalRectangle(vector<vector<char>>& matrix) {
-        int n = matrix.size();
-        int m = matrix[0].size();
-        int maxArea = 0;
-        vector<int>heights(m,0);
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(matrix[i][j]=='0')
-                heights[j] = 0;
-                else
-                heights[j]+=1;
+        int m = matrix.size();
+        int n = matrix[0].size();
+        vector<vector<int>> nums(m,vector<int>(n,0));
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                nums[i][j] = matrix[i][j] - '0';
             }
-            int area = largestRectangleArea(heights);
-            maxArea = max(maxArea,area);
         }
-        return maxArea;
+        int ans = 0;
+        ans = max(ans, largest(nums[0]));
+        for(int i=1;i<m;i++){
+            vector<int>& v1 = nums[i];
+            for(int j=0;j<nums[i].size();j++){
+                if(nums[i][j]!=0){
+                    nums[i][j] = 1 + nums[i-1][j];
+                }
+                    
+            }
+            ans = max(ans,largest(nums[i]));
+        }
+        return ans;
     }
 };
